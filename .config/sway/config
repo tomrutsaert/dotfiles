@@ -217,7 +217,7 @@ output DisplayPort-2 resolution 2560x1440 position 3000,0
     for_window [title="(?:Open|Save) (?:File|Folder|As)"] floating enable
     for_window [class="Spotify"] move window to scratchpad
     for_window [app_id="org.telegram.desktop"] move window to scratchpad
-    for_window [class="firefox"] move container to workspace 2
+    for_window [app_id="org.mozilla.firefox"] move container to workspace 2
     for_window [class="thunderbird"] move container to workspace 3
     for_window [class="jetbrains-idea"] move container to workspace 4 layout tabbed
     for_window [class="Slack"] move container to workspace 10
