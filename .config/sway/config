@@ -245,6 +245,10 @@ output DisplayPort-2 resolution 2560x1440 position 3000,0
     exec flatpak run org.telegram.desktop
     exec flatpak run com.nextcloud.desktopclient.nextcloud
 
+# appearance
+    default_border pixel 2
+    default_floating_border pixel 2
+
 # Include configs from 3 locations:
 #  - /usr/share/sway/config.d
 #  - /etc/sway/config.d
