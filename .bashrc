@@ -45,5 +45,3 @@ alias vi=vim
 unset rc
 
 alias doccle="distrobox enter doccle-fedora -nw"
-export DOCKER_HOST=unix:///run/user/1000/docker.sock
-eval "$(starship init bash)"
