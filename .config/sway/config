@@ -213,23 +213,29 @@ input type:keyboard {
 
     bindsym $mod+t [app_id="org.telegram.desktop"] scratchpad show; move position center
     bindsym $mod+s [class="Spotify"] scratchpad show; move position center
+    #bindsym $mod+t exec $HOME/bin/i3-focus org.telegram.desktop -t
+    #bindsym $mod+s exec $HOME/bin/i3-focus Spotify -t
 
 #
 # For Window
 #
+    for_window [title=".*"] floating enable
     for_window [shell="xwayland"] title_format "%title [XWayland]"
-    for_window [window_role="pop-up"] floating enable
-    for_window [window_role="bubble"] floating enable
-    for_window [window_role="dialog"] floating enable
-    for_window [window_type="dialog"] floating enable
-    for_window [app_id="com.nextcloud.desktopclient.nextcloud"] floating enabled; position right
-    for_window [title="(?:Open|Save) (?:File|Folder|As)"] floating enable
+    #for_window [window_role="pop-up"] floating enable
+    #for_window [window_role="bubble"] floating enable
+    #for_window [window_role="dialog"] floating enable
+    #for_window [window_type="dialog"] floating enable
+    #for_window [app_id="com.nextcloud.desktopclient.nextcloud"] floating enable; move window position top right
+    #for_window [title="(?:Open|Save) (?:File|Folder|As)"] floating enable
     for_window [class="Spotify"] move window to scratchpad
-    for_window [app_id="org.telegram.desktop"] move window to scratchpad
-    for_window [app_id="org.mozilla.firefox"] move container to workspace 2
-    for_window [app_id="org.mozilla.Thunderbird"] move container to workspace 3
-    for_window [class="jetbrains-idea"] move container to workspace 4; layout tabbed
-    for_window [class="Slack"] move container to workspace 10
+    #for_window [app_id="org.telegram.desktop" title="Media Viewer"] move window to scratchpad; scratchpad show; move position center; border pixel 1; sticky enable; shadows enable
+    for_window [app_id="org.telegram.desktop" title="!!Media*"] move window to scratchpad
+    for_window [app_id="foot"] floating disable
+    for_window [app_id="org.mozilla.firefox"] move container to workspace 2; floating disabled
+    for_window [app_id="org.mozilla.Thunderbird"] move container to workspace 3; floating disabled
+    for_window [class="jetbrains-idea"] move container to workspace 4; floating disabled; layout tabbed
+    for_window [app_id="com.vscodium.codium-url-handler"] move container to workspace 5; floating disabled; layout tabbed
+    for_window [class="Slack"] move container to workspace 10; floating disabled
 
 #
 # Resizing containers:
