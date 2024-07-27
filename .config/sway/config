@@ -234,7 +234,7 @@ input type:keyboard {
     for_window [app_id="foot"] floating disable
     for_window [app_id="org.mozilla.firefox"] move container to workspace 2; floating disabled
     for_window [title="Extension*"] floating enable
-    for_window [app_id="org.mozilla.Thunderbird"] move container to workspace 3; floating disabled
+    # for_window [app_id="org.mozilla.Thunderbird"] move container to workspace 3; floating disabled
     for_window [class="jetbrains-idea"] move container to workspace 4; floating disabled; layout tabbed
     for_window [app_id="com.vscodium.codium-url-handler"] move container to workspace 5; floating disabled; layout tabbed
     for_window [class="VSCodium"] move container to workspace 5; floating disabled; layout tabbed
@@ -255,7 +255,7 @@ input type:keyboard {
     exec flatpak run org.flameshot.Flameshot
     exec flatpak run com.spotify.Client
     exec flatpak run org.mozilla.firefox
-    exec flatpak run org.mozilla.Thunderbird
+    # exec flatpak run org.mozilla.Thunderbird
     exec flatpak run com.slack.Slack
     exec flatpak run org.telegram.desktop
     exec flatpak run com.nextcloud.desktopclient.nextcloud
