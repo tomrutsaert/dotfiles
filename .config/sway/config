@@ -31,7 +31,7 @@ set $menu $rofi_cmd -show combi -combi-modes drun#run -modes combi
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
 # Requires: desktop-backgrounds-compat, swaybg
-output * bg /usr/share/backgrounds/default.png fill
+output * bg ~/.config/wp/background.jpg fill
 #
 # Example configuration:
 #
@@ -55,6 +55,7 @@ output DP-3 resolution 2560x1440 position 3000,0
 # This will lock your screen after 300 seconds of inactivity, then turn off
 # your displays after another 300 seconds, and turn your screens back on when
 # resumed. It will also lock your screen before your computer goes to sleep.
+exec swayidle -w timeout 300 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' 
 
 ### Input configuration
 #
@@ -232,9 +233,11 @@ input type:keyboard {
     for_window [app_id="org.telegram.desktop" title="!!Media*"] move window to scratchpad
     for_window [app_id="foot"] floating disable
     for_window [app_id="org.mozilla.firefox"] move container to workspace 2; floating disabled
+    for_window [title="Extension*"] floating enable
     for_window [app_id="org.mozilla.Thunderbird"] move container to workspace 3; floating disabled
     for_window [class="jetbrains-idea"] move container to workspace 4; floating disabled; layout tabbed
     for_window [app_id="com.vscodium.codium-url-handler"] move container to workspace 5; floating disabled; layout tabbed
+    for_window [class="VSCodium"] move container to workspace 5; floating disabled; layout tabbed
     for_window [class="Slack"] move container to workspace 10; floating disabled
 
 #
