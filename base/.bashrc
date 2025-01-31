@@ -38,10 +38,31 @@ if [ -d ~/.bashrc.d ]; then
 	done
 fi
 
-alias ll='ls -halF --color=auto'
-alias grep='grep --color=auto'
-alias vi=vim
+# Navigation
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias ~='cd ~'
+alias home='cd ~'
+
+# File Operations
+alias ll='ls -lah --color=auto'
+alias la='ls -A --color=auto'
+alias l='ls -CF --color=auto'
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+
+# Use Vim instead of Vi
+alias vi='vim'
 
 unset rc
 
-alias doccle="distrobox enter doccle-fedora -nw"
+# Doccle
+alias doccle="source $HOME/Nextcloud/conf/doccle/setenv"
+
+# make it possible to have separate settings.xml for doccle
+export MAVEN_SETTINGS_PATH="${MAVEN_HOME}/conf/settings.xml"
+mvn() {
+  command mvn "$@" --settings "$MAVEN_SETTINGS_PATH"
+}
