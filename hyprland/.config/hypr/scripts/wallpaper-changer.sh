@@ -19,7 +19,7 @@ function main() {
   echo "wallpaper = ,$wallpaper" >>~/.config/hypr/hyprpaper.conf
 
   hyprpaper &
-  sleep 10m
+  sleep 50m
   main
 }
 
