@@ -268,6 +268,8 @@ input type:keyboard {
 # appearance
     default_border pixel 2
     default_floating_border pixel 2
+    smart_borders on
+    smart_gaps on
 
 # Include configs from 3 locations:
 #  - /usr/share/sway/config.d
