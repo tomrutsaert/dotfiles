@@ -8,11 +8,12 @@
     "spacing": 4, // Gaps between modules (4px)
     // Choose the order of the modules
     "modules-left": [
-        "sway/workspaces",
+        "hyprland/workspaces",
+        "hyprland/submap",
         "sway/scratchpad"
     ],
     "modules-center": [
-        "sway/window"
+        "hyprland/window"
     ],
     "modules-right": [
         "idle_inhibitor",
@@ -28,6 +29,9 @@
         "tray"
     ],
     // Modules configuration
+    "hyprland/submap": {
+        "format": "<span style=\"italic\">{}</span>"
+    },
     "sway/scratchpad": {
         "format": "{icon} {count}",
         "show-empty": false,
