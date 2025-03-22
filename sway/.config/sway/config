@@ -31,7 +31,7 @@ set $menu $rofi_cmd -show combi -combi-modes drun#run -modes combi
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
 # Requires: desktop-backgrounds-compat, swaybg
-output * bg /usr/share/backgrounds/default.png fill
+#output * bg /usr/share/backgrounds/default.png fill
 #
 # Example configuration:
 #
@@ -232,7 +232,7 @@ input type:keyboard {
     for_window [title="(?:Open|Save) (?:File|Folder|As)"] floating enable
     for_window [class="Spotify"] move window to scratchpad
     for_window [app_id="org.telegram.desktop"] move window to scratchpad
-    for_window [class="firefox"] move container to workspace 2
+    for_window [app_id="org.mozilla.firefox"] move container to workspace 2
     for_window [class="VSCodium"] move container to workspace 3
     for_window [class="jetbrains-idea"] move container to workspace 4 layout tabbed
     for_window [class="Slack"] {
@@ -263,13 +263,15 @@ input type:keyboard {
     exec flatpak run org.mozilla.firefox
     exec flatpak run com.slack.Slack
     exec flatpak run org.telegram.desktop
-    exec flatpak run com.nextcloud.desktopclient.nextcloud
+    exec flatpak run com.nextcloud.desktopclient.nextcloud --background
 
 # appearance
     default_border pixel 2
     default_floating_border pixel 2
     smart_borders on
     smart_gaps on
+    gaps outer 15
+    gaps inner 10
 
 # Include configs from 3 locations:
 #  - /usr/share/sway/config.d
