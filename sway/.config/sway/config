@@ -144,20 +144,26 @@ input type:keyboard {
     workspace 8 output $secondaryMonitor
     workspace 9 output $secondaryMonitor
     workspace 10 output $secondaryMonitor
+    workspace telegram output $mainMonitor
+    workspace spotify output $mainMonitor
     workspace slack output $secondaryMonitor
 
     # Switch to workspace
-    bindsym $mod+1 workspace number 1
-    bindsym $mod+2 workspace number 2
-    bindsym $mod+3 workspace number 3
-    bindsym $mod+4 workspace number 4
-    bindsym $mod+5 workspace number 5
-    bindsym $mod+6 workspace number 6
-    bindsym $mod+7 workspace number 7
-    bindsym $mod+8 workspace number 8
-    bindsym $mod+9 workspace number 9
-    bindsym $mod+0 workspace number 10
-    bindsym $mod+Shift+s workspace slack
+    bindsym $mod+1 exec ~/.config/sway/scripts/switch_workspace.sh 1
+    bindsym $mod+2 exec ~/.config/sway/scripts/switch_workspace.sh 2
+    bindsym $mod+3 exec ~/.config/sway/scripts/switch_workspace.sh 3
+    bindsym $mod+4 exec ~/.config/sway/scripts/switch_workspace.sh 4
+    bindsym $mod+5 exec ~/.config/sway/scripts/switch_workspace.sh 5
+    bindsym $mod+6 exec ~/.config/sway/scripts/switch_workspace.sh 6
+    bindsym $mod+7 exec ~/.config/sway/scripts/switch_workspace.sh 7
+    bindsym $mod+8 exec ~/.config/sway/scripts/switch_workspace.sh 8
+    bindsym $mod+9 exec ~/.config/sway/scripts/switch_workspace.sh 9
+    bindsym $mod+0 exec ~/.config/sway/scripts/switch_workspace.sh 10
+    bindsym $mod+t exec ~/.config/sway/scripts/toggle_workspace.sh telegram
+    bindsym $mod+s exec ~/.config/sway/scripts/toggle_workspace.sh spotify
+    bindsym $mod+Shift+s exec ~/.config/sway/scripts/toggle_workspace.sh slack
+
+
     # Move focused container to workspace
     bindsym $mod+Shift+1 move container to workspace number 1
     bindsym $mod+Shift+2 move container to workspace number 2
@@ -217,9 +223,6 @@ input type:keyboard {
 
     #assign applications to scratchpad
 
-    bindsym $mod+t [app_id="org.telegram.desktop"] scratchpad show; move position center
-    bindsym $mod+s [class="Spotify"] scratchpad show; move position center
-
 #
 # For Window
 #
@@ -230,11 +233,19 @@ input type:keyboard {
     for_window [window_type="dialog"] floating enable
     for_window [app_id="com.nextcloud.desktopclient.nextcloud"] floating enabled; position right
     for_window [title="(?:Open|Save) (?:File|Folder|As)"] floating enable
-    for_window [class="Spotify"] move window to scratchpad
-    for_window [app_id="org.telegram.desktop"] move window to scratchpad
     for_window [app_id="org.mozilla.firefox"] move container to workspace 2
     for_window [class="VSCodium"] move container to workspace 3
     for_window [class="jetbrains-idea"] move container to workspace 4 layout tabbed
+    for_window [app_id="org.telegram.desktop"] {
+        floating enable
+        move position center
+        move container to workspace telegram
+    }
+    for_window [class="Spotify"] {
+        floating enable
+        move position center
+        move container to workspace spotify
+    }
     for_window [class="Slack"] {
         floating enable
         move position 45ppt 5ppt
