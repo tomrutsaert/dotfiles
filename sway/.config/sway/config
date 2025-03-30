@@ -235,22 +235,27 @@ input type:keyboard {
     for_window [title="(?:Open|Save) (?:File|Folder|As)"] floating enable
     for_window [app_id="org.mozilla.firefox"] move container to workspace 2
     for_window [class="VSCodium"] move container to workspace 3
-    for_window [class="jetbrains-idea"] move container to workspace 4 layout tabbed
-    for_window [app_id="org.telegram.desktop"] {
+    for_window [class="jetbrains-idea"] move container to workspace 4
+    for_window [class="TelegramDesktop"] {
         floating enable
         move position center
+        resize set 2000 2000
         move container to workspace telegram
     }
+    
     for_window [class="Spotify"] {
         floating enable
         move position center
+        resize set 2000 2000
         move container to workspace spotify
     }
     for_window [class="Slack"] {
         floating enable
+        resize set 50pt 90pt
         move position 45ppt 5ppt
         move container to workspace slack
     }
+    for_window [class="Slack" title="Huddle.*"] resize set default
 
 #
 # Resizing containers:

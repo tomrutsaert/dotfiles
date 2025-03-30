@@ -59,7 +59,8 @@ alias vi='vim'
 unset rc
 
 # Doccle
-alias doccle="source $HOME/Nextcloud/conf/doccle/setenv"
+# alias doccle="source $HOME/Nextcloud/conf/doccle/setenv"
+. $HOME/Nextcloud/conf/doccle/setenv
 
 # make it possible to have separate settings.xml for doccle
 export MAVEN_SETTINGS_PATH="${MAVEN_HOME}/conf/settings.xml"
