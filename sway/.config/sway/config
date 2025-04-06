@@ -9,10 +9,6 @@
 # Logo key. Use Mod1 for Alt.
 set $mod Mod4
 # Home row direction keys, like vim
-set $left h
-set $down j
-set $up k
-set $right l
 # Your preferred terminal emulator
 # Recommends: foot
 set $term foot
@@ -107,22 +103,12 @@ input type:keyboard {
 # Moving around:
 #
     # Move your focus around
-    bindsym $mod+$left focus left
-    bindsym $mod+$down focus down
-    bindsym $mod+$up focus up
-    bindsym $mod+$right focus right
-    # Or use $mod+[up|down|left|right]
     bindsym $mod+Left focus left
     bindsym $mod+Down focus down
     bindsym $mod+Up focus up
     bindsym $mod+Right focus right
 
     # Move the focused window with the same, but add Shift
-    bindsym $mod+Shift+$left move left
-    bindsym $mod+Shift+$down move down
-    bindsym $mod+Shift+$up move up
-    bindsym $mod+Shift+$right move right
-    # Ditto, with arrow keys
     bindsym $mod+Shift+Left move left
     bindsym $mod+Shift+Down move down
     bindsym $mod+Shift+Up move up
@@ -161,7 +147,7 @@ input type:keyboard {
     bindsym $mod+0 exec ~/.config/sway/scripts/switch_workspace.sh 10
     bindsym $mod+t exec ~/.config/sway/scripts/toggle_workspace.sh telegram
     bindsym $mod+s exec ~/.config/sway/scripts/toggle_workspace.sh spotify
-    bindsym $mod+Shift+s exec ~/.config/sway/scripts/toggle_workspace_slack.sh slack
+    bindsym $mod+Shift+s exec ~/.config/sway/scripts/toggle_workspace.sh slack
 
 
     # Move focused container to workspace
@@ -231,28 +217,31 @@ input type:keyboard {
     for_window [window_role="bubble"] floating enable
     for_window [window_role="dialog"] floating enable
     for_window [window_type="dialog"] floating enable
-    for_window [app_id="com.nextcloud.desktopclient.nextcloud"] floating enabled; position right
+    for_window [app_id="com.nextcloud.desktopclient.nextcloud"] {
+        floating enable
+        move position center
+        move position 3240 -25
+    }
     for_window [title="(?:Open|Save) (?:File|Folder|As)"] floating enable
     for_window [app_id="org.mozilla.firefox"] move container to workspace 2
     for_window [class="VSCodium"] move container to workspace 3
     for_window [class="jetbrains-idea"] move container to workspace 4
     for_window [class="TelegramDesktop"] {
         floating enable
-        move position center
-        resize set 2000 2000
+        # move position center
+        # resize set 2000 2000
         move container to workspace telegram
     }
-    
     for_window [class="Spotify"] {
         floating enable
-        move position center
-        resize set 2000 2000
+        # move position center
+        # resize set 2000 2000
         move container to workspace spotify
     }
     for_window [class="Slack"] {
         floating enable
-        resize set 2000 2000
-        move position 1825 15
+        # resize set 2000 2000
+        # move position 1800 15
         move container to workspace slack
     }
     for_window [class="Slack" title="Huddle.*"] resize set default
@@ -275,7 +264,7 @@ input type:keyboard {
     exec ~/.config/sway/scripts/wallpaper-changer.sh
     exec ~/.config/sway/scripts/fixSpotifyCacheLock.sh && flatpak run com.spotify.Client
     exec flatpak run org.mozilla.firefox
-    exec flatpak run com.slack.Slack
+    exec flatpak run com.slack.Slack & sleep 1 & swaymsg 'for_window [class="Slack"] mark slack-main-window'
     exec flatpak run org.telegram.desktop
     exec flatpak run com.nextcloud.desktopclient.nextcloud --background
 

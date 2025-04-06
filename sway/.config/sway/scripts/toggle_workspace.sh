@@ -11,6 +11,33 @@ fi
 
 TARGET_WS="$1"
 
+# Helper function to switch and apply extras
+switch_workspace_with_extras() {
+    swaymsg workspace "$1"
+
+    case "$1" in
+        slack)
+            sleep 0.1
+            swaymsg '[class="Slack"] focus'
+            swaymsg '[class="Slack"] resize set 2000 2000'
+            swaymsg '[class="Slack"] move position 1800 15'
+            swaymsg '[class="Slack" title="Huddle.*"] resize set default'
+            ;;
+        telegram)
+            sleep 0.1
+            swaymsg '[class="Telegram"] focus'
+            swaymsg '[class="Telegram"] resize set 2000 2000'
+            swaymsg '[class="Telegram"] move position center'
+            ;;
+        spotify)
+            sleep 0.1
+            swaymsg '[class="Spotify"] focus'
+            swaymsg '[class="Spotify"] resize set 2000 2000'
+            swaymsg '[class="Spotify"] move position center'
+            ;;
+    esac
+}
+
 # Get the currently visible workspaces and the focused workspace **before switching**
 declare -A VISIBLE_WORKSPACES
 FOCUSED_WS=""
@@ -47,7 +74,7 @@ fi
 
 # 2. If the target workspace is visible but NOT focused → Just switch to it (no state update)
 if [[ -n "$TARGET_OUTPUT" ]]; then
-    swaymsg workspace "$TARGET_WS"
+    switch_workspace_with_extras "$TARGET_WS"
     exit 0
 fi
 
@@ -59,4 +86,4 @@ if [[ -n "$EXPECTED_OUTPUT" && -n "${VISIBLE_WORKSPACES[$EXPECTED_OUTPUT]}" ]]; 
 fi
 
 # Now switch to the target workspace
-swaymsg workspace "$TARGET_WS"
+switch_workspace_with_extras "$TARGET_WS"
