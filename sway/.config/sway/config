@@ -161,7 +161,7 @@ input type:keyboard {
     bindsym $mod+0 exec ~/.config/sway/scripts/switch_workspace.sh 10
     bindsym $mod+t exec ~/.config/sway/scripts/toggle_workspace.sh telegram
     bindsym $mod+s exec ~/.config/sway/scripts/toggle_workspace.sh spotify
-    bindsym $mod+Shift+s exec ~/.config/sway/scripts/toggle_workspace.sh slack
+    bindsym $mod+Shift+s exec ~/.config/sway/scripts/toggle_workspace_slack.sh slack
 
 
     # Move focused container to workspace
@@ -251,8 +251,8 @@ input type:keyboard {
     }
     for_window [class="Slack"] {
         floating enable
-        resize set 50pt 90pt
-        move position 45ppt 5ppt
+        resize set 2000 2000
+        move position 1825 15
         move container to workspace slack
     }
     for_window [class="Slack" title="Huddle.*"] resize set default
