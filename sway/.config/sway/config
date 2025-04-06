@@ -189,12 +189,12 @@ input type:keyboard {
     # You can "split" the current object of your focus with
     # $mod+b or $mod+v, for horizontal and vertical splits
     # respectively.
-    bindsym $mod+b splith
+    bindsym $mod+h splith
     bindsym $mod+v splitv
 
     # Switch the current container between different layout styles
     #bindsym $mod+s layout stacking
-    # bindsym $mod+w layout tabbed
+    bindsym $mod+w layout tabbed
     bindsym $mod+e layout toggle split
 
     # Make the current focus fullscreen
@@ -269,7 +269,7 @@ input type:keyboard {
     bindsym --release Print exec --no-startup-id grim -g "$(slurp -d)" - | swappy -f -
 
 # show waybar
-    bindsym $mod+w exec "pgrep waybar && pkill waybar || waybar & disown"
+    bindsym $mod+b exec "pgrep waybar && pkill waybar || waybar & disown"
 
 # startup applications
     exec ~/.config/sway/scripts/wallpaper-changer.sh
