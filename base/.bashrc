@@ -60,13 +60,15 @@ unset rc
 
 # Doccle
 # alias doccle="source $HOME/Nextcloud/conf/doccle/setenv"
+if [ -f /etc/bashrc ]; then
 . $HOME/Nextcloud/conf/doccle/setenv
+fi
 
 # make it possible to have separate settings.xml for doccle
-export MAVEN_SETTINGS_PATH="${MAVEN_HOME}/conf/settings.xml"
-mvn() {
-  command mvn "$@" --settings "$MAVEN_SETTINGS_PATH"
-}
+# export MAVEN_SETTINGS_PATH="${MAVEN_HOME}/conf/settings.xml"
+# mvn() {
+#   command mvn "$@" --settings "$MAVEN_SETTINGS_PATH"
+# }
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
