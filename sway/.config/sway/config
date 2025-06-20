@@ -87,6 +87,9 @@ input type:keyboard {
     # Start your launcher
     bindsym $mod+d exec $menu
 
+    # Focus do not follow mouse
+    focus_follows_mouse no
+
     # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.
     # Despite the name, also works for non-floating windows.
@@ -244,7 +247,14 @@ input type:keyboard {
         # move position 1800 15
         move container to workspace slack
     }
+    for_window [app_id="com.slack.Slack"] {
+        floating enable
+        # resize set 2000 2000
+        # move position 1800 15
+        move container to workspace slack
+    }
     for_window [class="Slack" title="Huddle.*"] resize set default
+    for_window [app_id="com.slack.Slack" title="Huddle.*"] resize set default
 
 #
 # Resizing containers:
@@ -261,6 +271,7 @@ input type:keyboard {
     bindsym $mod+b exec "pgrep waybar && pkill waybar || waybar & disown"
 
 # startup applications
+    exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
     exec ~/.config/sway/scripts/wallpaper-changer.sh
     exec ~/.config/sway/scripts/fixSpotifyCacheLock.sh && flatpak run com.spotify.Client
     exec flatpak run org.mozilla.firefox

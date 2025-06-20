@@ -22,6 +22,10 @@ switch_workspace_with_extras() {
             swaymsg '[class="Slack"] resize set 2000 2000'
             swaymsg '[class="Slack"] move position 1800 15'
             swaymsg '[class="Slack" title="Huddle.*"] resize set default'
+            swaymsg '[app_id="com.slack.Slack"] focus'
+            swaymsg '[app_id="com.slack.Slack"] resize set 2000 2000'
+            swaymsg '[app_id="com.slack.Slack"] move position 1800 15'
+            swaymsg '[app_id="com.slack.Slack" title="Huddle.*"] resize set default'
             ;;
         telegram)
             sleep 0.1

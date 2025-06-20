@@ -17,8 +17,9 @@ restore_vcp_values() {
     # Read the saved VCP values from the state file
     if [ -f "$VCP_STATE_FILE" ]; then
         read current_vcp_1 current_vcp_2 < "$VCP_STATE_FILE"
-        ddcutil setvcp 10 $current_vcp_1 --noverify --display 1
-        ddcutil setvcp 10 $current_vcp_2 --noverify --display 2
+        ddcutil setvcp 10 $current_vcp_1 --verify --display 1
+        # sleep 2
+        # ddcutil setvcp 10 $current_vcp_2 --verify --display 2
     else
         echo "No saved VCP values found, skipping restore."
     fi
@@ -27,8 +28,8 @@ restore_vcp_values() {
 # Dimming function to lower brightness
 dim_displays() {
     ddcutil setvcp 10 20 --noverify --display 1
-    ddcutil setvcp 10 20 --noverify --display 2
-}
+#     ddcutil setvcp 10 20 --noverify --display 2
+# }
 
 # Process arguments
 case "$1" in
