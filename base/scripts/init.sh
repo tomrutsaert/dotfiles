@@ -15,7 +15,7 @@ sdk install maven
 
 #nvm
 mkdir -p /tmp/nvm && cd /tmp/nvm
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
 source $HOME/.bashrc
 nvm install --latest-npm
 nvm alias default $(node --version)

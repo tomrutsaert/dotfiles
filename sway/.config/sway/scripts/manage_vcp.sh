@@ -29,7 +29,7 @@ restore_vcp_values() {
 dim_displays() {
     ddcutil setvcp 10 20 --noverify --display 1
 #     ddcutil setvcp 10 20 --noverify --display 2
-# }
+}
 
 # Process arguments
 case "$1" in

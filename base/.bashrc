@@ -58,17 +58,13 @@ alias vi='vim'
 
 unset rc
 
-# Doccle
+# Doccle specific
 # alias doccle="source $HOME/Nextcloud/conf/doccle/setenv"
-if [ -f /etc/bashrc ]; then
-. $HOME/Nextcloud/conf/doccle/setenv
+if [ -f "$HOME/Nextcloud/conf/doccle/setenv" ]; then
+    source "$HOME/Nextcloud/conf/doccle/setenv"
 fi
 
-# make it possible to have separate settings.xml for doccle
-# export MAVEN_SETTINGS_PATH="${MAVEN_HOME}/conf/settings.xml"
-# mvn() {
-#   command mvn "$@" --settings "$MAVEN_SETTINGS_PATH"
-# }
+eval "$(starship init bash)"
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"

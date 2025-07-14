@@ -29,9 +29,12 @@ switch_workspace_with_extras() {
             ;;
         telegram)
             sleep 0.1
-            swaymsg '[class="Telegram"] focus'
-            swaymsg '[class="Telegram"] resize set 2000 2000'
-            swaymsg '[class="Telegram"] move position center'
+            swaymsg '[class="TelegramDesktop"] focus'
+            swaymsg '[class="TelegramDesktop"] resize set 2000 2000'
+            swaymsg '[class="TelegramDesktop"] move position center'
+            swaymsg '[app_id="org.telegram.desktop"] focus'
+            swaymsg '[app_id="org.telegram.desktop"] resize set 2000 2000'
+            swaymsg '[app_id="org.telegram.desktop"] move position center'
             ;;
         spotify)
             sleep 0.1

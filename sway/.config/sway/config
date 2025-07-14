@@ -21,7 +21,7 @@ set $rofi_cmd rofi \
 # Shows a combined list of the applications with desktop files and
 # executables from PATH.
 # TODO: add window with the next release of rofi-wayland
-set $menu $rofi_cmd -show combi -combi-modes drun#run -modes combi
+set $menu $rofi_cmd -show combi -combi-modes drun -modes combi
 
 ### Output configuration
 #
@@ -53,6 +53,14 @@ set $secondaryMonitor HDMI-A-1
 # This will lock your screen after 300 seconds of inactivity, then turn off
 # your displays after another 300 seconds, and turn your screens back on when
 # resumed. It will also lock your screen before your computer goes to sleep.
+exec swayidle -w \
+    timeout 300 "~/.config/sway/scripts/manage_vcp.sh save && ~/.config/sway/scripts/manage_vcp.sh dim" \
+        resume "~/.config/sway/scripts/manage_vcp.sh restore" \
+    timeout 450 'swaymsg "output * dpms off"' \
+        resume 'swaymsg "output * dpms on"' \
+    timeout 600 'swaymsg "output * power off"' \
+        resume 'swaymsg "output * power on"' \
+    timeout 3600 'systemctl suspend'
 
 ### Input configuration
 #
@@ -67,8 +75,6 @@ set $secondaryMonitor HDMI-A-1
 #
 # You can get the names of your inputs by running: swaymsg -t get_inputs
 # Read `man 5 sway-input` for more information about this section.
-
-
 input type:keyboard {
     xkb_layout us
     xkb_variant altgr-intl
@@ -152,7 +158,6 @@ input type:keyboard {
     bindsym $mod+s exec ~/.config/sway/scripts/toggle_workspace.sh spotify
     bindsym $mod+Shift+s exec ~/.config/sway/scripts/toggle_workspace.sh slack
 
-
     # Move focused container to workspace
     bindsym $mod+Shift+1 move container to workspace number 1
     bindsym $mod+Shift+2 move container to workspace number 2
@@ -227,9 +232,17 @@ input type:keyboard {
     }
     for_window [title="(?:Open|Save) (?:File|Folder|As)"] floating enable
     for_window [app_id="org.mozilla.firefox"] move container to workspace 2
+    for_window [app_id="firefox"] move container to workspace 2
+    for_window [app_id="firefox" title=".*Microsoft Teams.*"] move to workspace 0
     for_window [class="VSCodium"] move container to workspace 3
     for_window [class="jetbrains-idea"] move container to workspace 4
     for_window [class="TelegramDesktop"] {
+        floating enable
+        # move position center
+        # resize set 2000 2000
+        move container to workspace telegram
+    }
+    for_window [app_id="org.telegram.desktop"] {
         floating enable
         # move position center
         # resize set 2000 2000
@@ -272,12 +285,16 @@ input type:keyboard {
 
 # startup applications
     exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
+    exec makos
     exec ~/.config/sway/scripts/wallpaper-changer.sh
     exec ~/.config/sway/scripts/fixSpotifyCacheLock.sh && flatpak run com.spotify.Client
-    exec flatpak run org.mozilla.firefox
+    exec firefox --new-window https://teams.microsoft.com/v2/ & sleep 1 & swaymsg 'for_window [app_id="firefox" title=".*Microsoft Teams.*"] move to workspace 10'
+    exec firefox
     exec flatpak run com.slack.Slack & sleep 1 & swaymsg 'for_window [class="Slack"] mark slack-main-window'
     exec flatpak run org.telegram.desktop
-    exec flatpak run com.nextcloud.desktopclient.nextcloud --background
+    # exec flatpak run com.nextcloud.desktopclient.nextcloud --background
+    exec nextcloud --background
+    exec_always nm-applet --indicator
 
 # appearance
     default_border pixel 2
@@ -287,25 +304,8 @@ input type:keyboard {
     gaps outer 15
     gaps inner 10
 
-# Include configs from 3 locations:
-#  - /usr/share/sway/config.d
-#  - /etc/sway/config.d
-#  - $XDG_CONFIG_HOME/sway/config.d ($HOME/.config/sway/config.d)
-#
-# If multiple directories contain the files with the same name, the later
-# directory takes precedence; `$XDG_CONFIG_HOME/sway/config.d/20-swayidle.conf`
-# will always be loaded instead of `/usr/share/sway/config.d/20-swayidle.conf`
-# or `/etc/sway/config.d/20-swayidle.conf`
-#
-# This mechanism permits overriding our default configuration per-system
-# (/etc) or per-user ($XDG_CONFIG_HOME) basis. Just create the file you
-# want to modify/override in the higher-level directory.
-#
-# For example, to disable the default bar from Fedora configs, you'll need to
-#     $ echo -n > "$HOME/.config/sway/config.d/90-bar.conf"
-#
-# Note the quoting, the $() and the arguments quoting. All the parts are equally
-# important to make the magic work. And if you want to learn the secret behind
-# the trick, it's all in the `wordexp(3)`.
-#
-include '$(/usr/libexec/sway/layered-include "/usr/share/sway/config.d/*.conf" "/etc/sway/config.d/*.conf" "${XDG_CONFIG_HOME:-$HOME/.config}/sway/config.d/*.conf")'
+# brightness
+    bindsym Ctrl+XF86MonBrightnessUp exec "ddcutil setvcp 10 85 --noverify --display 1 && ddcutil setvcp 10 85 --noverify --display 2"
+    bindsym XF86MonBrightnessUp exec "ddcutil setvcp 10 70 --noverify --display 1 && ddcutil setvcp 10 70 --noverify --display 2"
+    bindsym XF86MonBrightnessDown exec "ddcutil setvcp 10 40 --noverify --display 1 && ddcutil setvcp 10 40 --noverify --display 2"
+    bindsym Ctrl+XF86MonBrightnessDown exec "ddcutil setvcp 10 30 --noverify --display 1 && ddcutil setvcp 10 30 --noverify --display 2"
