@@ -204,7 +204,7 @@ client.background       #FFFFFF
 bar {
 #  i3bar_command i3bar --transparency
   id mybar
-  mode hide
+  mode invisible
   hidden_state hide
   tray_output primary
   font pango: Droid Sans Mono 10
