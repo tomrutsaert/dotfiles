@@ -12,7 +12,7 @@ set $mod Mod4
 # is used in the bar {} block below.
 font pango:monospace 8
 
-exec ~/.screenlayout/main-screenlayout.sh
+# exec ~/.screenlayout/main-screenlayout.sh
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
@@ -20,14 +20,14 @@ exec ~/.screenlayout/main-screenlayout.sh
 
 # Start XDG autostart .desktop files using dex. See also
 # https://wiki.archlinux.org/index.php/XDG_Autostart
-exec --no-startup-id dex-autostart --autostart --environment i3
+exec --no-startup-id dex --autostart --environment i3
 
 # The combination of xss-lock, nm-applet and pactl is a popular choice, so
 # they are included here as an example. Modify as you see fit.
 
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
-#exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
+exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
@@ -39,13 +39,21 @@ bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
-bindsym XF86MonBrightnessUp exec light -A 5
-bindsym XF86MonBrightnessDown exec light -U 5
+
+# Brightness
+bindsym XF86MonBrightnessUp exec brightnessctl set +5%
+bindsym XF86MonBrightnessDown exec brightnessctl set 5%-
+#bindsym XF86MonBrightnessUp exec light -A 5
+#bindsym XF86MonBrightnessDown exec light -U 5
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
-focus_follows_mouse no
+#focus_follows_mouse no
+
+# move tiling windows via drag & drop by left-clicking into the title bar,
+# or left-clicking anywhere into the window while holding the floating modifier.
+tiling_drag modifier titlebar
 
 # start a terminal
 bindsym $mod+Return exec i3-sensible-terminal
@@ -56,11 +64,11 @@ bindsym $mod+Shift+q kill
 # start dmenu (a program launcher)
 # bindsym $mod+d exec --no-startup-id "dmenu_run -nf '#BBBBBB' -nb '#222222' -sb '#005577' -sf '#EEEEEE' -fn 'monospace-10'"
 # A more modern dmenu replacement is rofi:
-# bindcode $mod+40 exec "rofi -modi drun,run -show drun"
+bindsym $mod+d exec --no-startup-id rofi -show drun
 # There also is i3-dmenu-desktop which only displays applications shipping a
 # .desktop file. It is a wrapper around dmenu, so you need that installed.
 # bindcode $mod+40 exec --no-startup-id i3-dmenu-desktop
-bindsym $mod+d exec --no-startup-id j4-dmenu-desktop
+#bindsym $mod+d exec --no-startup-id j4-dmenu-desktop
 
 # change focus
 bindsym $mod+j focus left
@@ -102,7 +110,7 @@ bindsym $mod+v split v
 bindsym $mod+f fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
-bindsym $mod+s layout stacking
+#bindsym $mod+s layout stacking
 bindsym $mod+w layout tabbed
 bindsym $mod+e layout toggle split
 
@@ -131,16 +139,16 @@ set $ws8 "8"
 set $ws9 "9"
 set $ws10 "10"
 
-workspace $ws1 output DisplayPort-1-0
-workspace $ws2 output DisplayPort-1-0
-workspace $ws3 output DisplayPort-1-0
-workspace $ws4 output DisplayPort-1-0
-workspace $ws5 output DisplayPort-1-0
-workspace $ws6 output DisplayPort-1-0
-workspace $ws7 output DisplayPort-1-0
-workspace $ws8 output DisplayPort-1-0
-workspace $ws9 output DisplayPort-2
-workspace $ws10 output DisplayPort-1-1
+#workspace $ws1 output DisplayPort-1-0
+#workspace $ws2 output DisplayPort-1-0
+#workspace $ws3 output DisplayPort-1-0
+#workspace $ws4 output DisplayPort-1-0
+#workspace $ws5 output DisplayPort-1-0
+#workspace $ws6 output DisplayPort-1-0
+#workspace $ws7 output DisplayPort-1-0
+#workspace $ws8 output DisplayPort-1-0
+#workspace $ws9 output DisplayPort-2
+#workspace $ws10 output DisplayPort-1-1
 
 # switch to workspace
 bindsym $mod+1 workspace number $ws1
@@ -153,6 +161,9 @@ bindsym $mod+7 workspace number $ws7
 bindsym $mod+8 workspace number $ws8
 bindsym $mod+9 workspace number $ws9
 bindsym $mod+0 workspace number $ws10
+bindsym $mod+s workspace spotify
+bindsym $mod+Shift+s workspace slack
+bindsym $mod+t workspace telegram
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace number $ws1
@@ -169,9 +180,9 @@ bindsym $mod+Shift+0 move container to workspace number $ws10
 #assigning windows to workspace
 for_window [class="firefox"] move to workspace $ws2
 for_window [class="jetbrains-idea"] move to workspace $ws4 layout tabbed
-for_window [class="Spotify"] move to workspace $ws9
-for_window [class="TelegramDesktop"] move to workspace $ws9
-for_window [class="Slack"] move to workspace $ws10
+for_window [class="Spotify"] move to workspace spotify
+for_window [class="TelegramDesktop"] move to workspace telegram
+for_window [class="Slack"] move to workspace slack
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
@@ -179,9 +190,6 @@ bindsym $mod+Shift+c reload
 bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
-# suspend and poweroff
-# bindsym $mod+Shift+s exec systemctl suspend -i
-# bindsym $mod+Shift+p exec systemctl poweroff
 
 # class                 border  bground text    indicator child_border
 client.focused          #83CAFA #51A2DA #FFFFFF #83CAFA   #51A2DA
@@ -198,15 +206,15 @@ bar {
   tray_output primary
   font pango: Droid Sans Mono 10
   colors {
-    background #523d6499
-    statusline #FFFFFF
+    background #00000000
+    statusline #999999
     separator  #666666
 
-    focused_workspace  #83CAFA #51A2DA #FFFFFF
-    active_workspace   #3C6EB4 #294172 #FFFFFF
-    inactive_workspace #8C8C8C #4C4C4C #888888
-    urgent_workspace   #EC69A0 #DB3279 #FFFFFF
-    binding_mode       #b691d3 #A07CBC #FFFFFF
+    focused_workspace  #000000 #5454FF #FFFFFF
+    active_workspace   #000000 #294172 #999999
+    inactive_workspace #000000 #222222 #888888
+    urgent_workspace   #000000 #DB3279 #FFFFFF
+    binding_mode       #000000 #A07CBC #FFFFFF
   }
   status_command i3blocks
 }
@@ -221,8 +229,10 @@ bindsym $mod+Ctrl+Left resize grow width 5 px or 5 ppt
 
 bindsym --release Print exec --no-startup-id flameshot gui
 
+exec --no-startup-id picom --experimental-backends --vsync
 exec --no-startup-id flameshot
 exec --no-startup-id flatpak run com.spotify.Client
-exec --no-startup-id firefox
+exec --no-startup-id flatpak run org.mozilla.firefox
 exec --no-startup-id flatpak run com.slack.Slack
 exec --no-startup-id flatpak run org.telegram.desktop
+
