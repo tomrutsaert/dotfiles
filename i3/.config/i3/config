@@ -204,12 +204,13 @@ client.background       #FFFFFF
 bar {
 #  i3bar_command i3bar --transparency
   id mybar
-  mode invisible
+  mode hide
   hidden_state hide
   tray_output primary
+  position top
   font pango: Droid Sans Mono 10
   colors {
-    background #00000000
+    background #000000FF
     statusline #999999
     separator  #666666
 
@@ -222,10 +223,10 @@ bar {
   status_command i3blocks
 }
 
-bindsym $mod+b bar mode toggle mybar
-
 default_border pixel 1
 default_floating_border pixel 1
+smart_borders no_gaps
+
 # Resizing by 5
 bindsym $mod+Ctrl+Right resize shrink width 5 px or 5 ppt
 bindsym $mod+Ctrl+Up resize grow height 5 px or 5 ppt
