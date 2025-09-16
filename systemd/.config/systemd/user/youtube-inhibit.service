@@ -1,0 +1,12 @@
+[Unit]
+Description=Prevent sleep when focused Firefox YouTube
+After=graphical-session.target
+
+[Service]
+ExecStart=%h/scripts/youtube-inhibit.sh
+Restart=always
+RestartSec=5
+Environment=PATH=%h/.local/bin:/usr/local/bin:/usr/bin
+
+[Install]
+WantedBy=default.target
