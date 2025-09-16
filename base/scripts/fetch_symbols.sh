@@ -3,11 +3,7 @@
 #Copied from a github gist (I do not find the gist anymore to give props, if you find it let me know, i will update this comment) and improved
 
 declare -a fonts=(
-    JetBrainsMono
-    Meslo
-    ProggyClean
-    RobotoMono
-    SourceCodePro
+    NerdFontsSymbolsOnly
 )
 
 version='3.4.0'
