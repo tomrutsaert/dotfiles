@@ -1,0 +1,8 @@
+# ~/.config/systemd/user/manual-inhibit.service
+[Unit]
+Description=Manual sleep/idle inhibit
+
+[Service]
+ExecStart=/usr/bin/systemd-inhibit --what=idle:sleep --why="Manual Inhibit" sleep infinity
+Type=simple
+Restart=no

@@ -235,7 +235,7 @@ bar {
     urgent_workspace   #000000 #DB3279 #FFFFFF
     binding_mode       #000000 #A07CBC #FFFFFF
   }
-  status_command i3blocks
+  status_command i3blocks -c ~/.config/i3blocks/config
 }
 
 bindsym $mod+b bar mode dock
