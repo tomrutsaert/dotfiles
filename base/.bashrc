@@ -58,6 +58,10 @@ alias vi='vim'
 
 unset rc
 
+if [ -f /usr/share/bash-completion/bash_completion ]; then
+    . /usr/share/bash-completion/bash_completion
+fi
+
 # Doccle specific
 # alias doccle="source $HOME/Nextcloud/conf/doccle/setenv"
 if [ -f "$HOME/Nextcloud/conf/doccle/setenv" ]; then

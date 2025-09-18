@@ -1,0 +1,13 @@
+[Unit]
+Description=Start Firefox after network is up
+After=network-online.target nss-lookup.target time-sync.target
+Wants=network-online.target time-sync.target
+
+[Service]
+ExecStart=firefox-esr
+Restart=on-failure
+Environment=DISPLAY=:0
+Environment=XAUTHORITY=%h/.Xauthority
+
+[Install]
+WantedBy=default.target

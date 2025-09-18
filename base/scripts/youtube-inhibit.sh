@@ -9,7 +9,7 @@ while true; do
     NODE=$(i3-msg -t get_tree | jq -r '
         recurse(.nodes[], .floating_nodes[])
         | select(.focused == true)
-        | select(.window_properties.class? == "firefox")
+        | select(.window_properties.class? == "firefox-esr")
         | select(.window_properties.title? | contains("- YouTube — Mozilla Firefox"))
     ')
 
@@ -29,13 +29,13 @@ while true; do
             xset s off -dpms
 
             # Background restore after 0.5h in case script misses it
-            (
-                sleep 1800
-                if [[ -f "$LOCK_FILE" ]]; then
-                    echo "Background restore DPMS after 0.5h in case script misses it"
-                    xset s on +dpms
-                fi
-            ) &
+            # (
+            #     sleep 1800
+            #     if [[ -f "$LOCK_FILE" ]]; then
+            #         echo "Background restore DPMS after 0.5h in case script misses it"
+            #         xset s on +dpms
+            #     fi
+            # ) &
         fi
     else
         # Either YouTube not focused or user idle too long → remove inhibit
