@@ -269,3 +269,5 @@ exec --no-startup-id xset dpms 240 360 480
 # cursor size
 exec_always --no-startup-id xsetroot -cursor_name left_ptr
 exec --no-startup-id xrdb -merge ~/.Xresources
+
+exec_always --no-startup-id ~/.config/i3/scripts/wallpaper-changer.sh
