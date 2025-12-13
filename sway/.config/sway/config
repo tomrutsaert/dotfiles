@@ -273,7 +273,7 @@ input type:keyboard {
     bindsym $mod+Ctrl+Left resize grow width 5 px or 5 ppt
 
 # screenshots
-    bindsym --release Print exec --no-startup-id grim -g "$(slurp -d)" - | swappy -f -
+    bindsym Print exec --no-startup-id sh -c 'grim -g "$(slurp)" - | swappy -f -'
 
 # show waybar
     bindsym $mod+b exec "pgrep waybar && pkill waybar || waybar & disown"
