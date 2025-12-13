@@ -63,11 +63,11 @@ if [ -f /usr/share/bash-completion/bash_completion ]; then
 fi
 
 # Doccle specific
-# alias doccle="source $HOME/Nextcloud/conf/doccle/setenv"
-if [ -f "$HOME/Nextcloud/conf/doccle/setenv" ]; then
-    source "$HOME/Nextcloud/conf/doccle/setenv"
+if [ -f "$HOME/secrets/doccle/setenv" ]; then
+    source "$HOME/secrets/doccle/setenv"
 fi
 
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 eval "$(starship init bash)"
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!

@@ -12,6 +12,7 @@ sed -i 's/sdkman_auto_env=false/sdkman_auto_env=true/g' $HOME/.sdkman/etc/config
 
 #maven
 sdk install maven
+sdk installl jbang
 
 #nvm
 mkdir -p /tmp/nvm && cd /tmp/nvm
