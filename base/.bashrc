@@ -56,6 +56,8 @@ alias mv='mv -i'
 # Use Vim instead of Vi
 alias vi='vim'
 
+alias ollama='docker exec -it ollama ollama'
+
 unset rc
 
 if [ -f /usr/share/bash-completion/bash_completion ]; then

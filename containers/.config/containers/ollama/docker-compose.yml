@@ -1,0 +1,29 @@
+services:
+  ollama:
+    image: ollama/ollama:rocm
+    container_name: ollama
+    command: ["serve"]
+    restart: unless-stopped
+
+    # GPU devices
+    devices:
+      - /dev/kfd:/dev/kfd
+      - /dev/dri:/dev/dri
+
+    group_add:
+      - video
+
+    ipc: host
+    cap_add:
+      - SYS_PTRACE
+
+    ports:
+      - "11434:11434"
+
+    volumes:
+      - ${HOME}/.ollama:/root/.ollama
+
+    #environment:
+      # Optional: adjust for your GPU if needed
+      # HSA_OVERRIDE_GFX_VERSION: "10.3.0"
+      # HIP_VISIBLE_DEVICES: "0"
