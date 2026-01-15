@@ -1,15 +1,18 @@
 #!/bin/bash
 
-function main() {
-  # Select a random wallpaper
-  wallpaper=$(find ~/documents/wallpapers/ -maxdepth 1 -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \) | shuf -n1)
+WALLPAPER_DIR="$HOME/documents/wallpapers"
 
-  # Set the wallpaper using swaybg
+while true; do
+  # Kill any existing swaybg instance
+  pkill swaybg
+
+  # Select a random wallpaper
+  wallpaper=$(find "$WALLPAPER_DIR" -maxdepth 1 -type f \
+    \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \) | shuf -n1)
+
+  # Start swaybg
   swaybg -i "$wallpaper" -m fill &
 
-  # Wait for 50 minutes before changing again
+  # Wait 50 minutes
   sleep 50m
-  main
-}
-
-main
+done
