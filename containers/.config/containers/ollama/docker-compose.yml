@@ -27,3 +27,13 @@ services:
       # Optional: adjust for your GPU if needed
       # HSA_OVERRIDE_GFX_VERSION: "10.3.0"
       # HIP_VISIBLE_DEVICES: "0"
+      
+  perplexica:
+    image: itzcrazykns1337/perplexica:latest
+    build:
+      context: .
+    ports:
+      - '3000:3000'
+    volumes:
+      - ${HOME}/.perplexica/data:/home/perplexica/data
+    restart: unless-stopped

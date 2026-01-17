@@ -128,6 +128,8 @@ layout {
     // Set gaps around windows in logical pixels.
     gaps 2
 
+    always-center-single-column
+
     // When to center a column when changing focus, options are:
     // - "never", default behavior, focusing an off-screen column will keep at the left
     //   or right edge of the screen.
@@ -283,7 +285,15 @@ layout {
 // See the binds section below for more spawn examples.
 
 // This line starts waybar, a commonly used bar for Wayland compositors.
-spawn-at-startup "waybar"
+// spawn-at-startup "waybar"
+
+
+spawn-sh-at-startup "~/.config/niri/scripts/fixSpotifyCacheLockAndStartSpotify.sh"
+spawn-sh-at-startup "~/.config/sway/scripts/wallpaper-changer.sh"
+spawn-sh-at-startup "firefox"
+spawn-sh-at-startup "flatpak run com.slack.Slack"
+spawn-sh-at-startup "flatpak run org.telegram.desktop"
+spawn-sh-at-startup "nm-applet --indicator"
 
 // To run a shell command (with variables, pipes, etc.), use spawn-sh-at-startup:
 // spawn-sh-at-startup "qs -c ~/source/qs/MyAwesomeShell"
@@ -298,7 +308,7 @@ hotkey-overlay {
 // Additionally, clients will be informed that they are tiled, removing some client-side rounded corners.
 // This option will also fix border/focus ring drawing behind some semitransparent windows.
 // After enabling or disabling this, you need to restart the apps for this to take effect.
-// prefer-no-csd
+prefer-no-csd
 
 // You can change the path where screenshots are saved.
 // A ~ at the front will be expanded to the home directory.
@@ -313,7 +323,7 @@ screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
 // https://yalter.github.io/niri/Configuration:-Animations
 animations {
     // Uncomment to turn off all animations.
-    // off
+    off
 
     // Slow down all animations by this factor. Values below 1 speed them up instead.
     // slowdown 3.0
@@ -382,15 +392,11 @@ workspace "files" {
     open-on-output "DP-1"
 }
 
-workspace "work1" {
+workspace "work6" {
     open-on-output "DP-1"
 }
 
-workspace "work2" {
-    open-on-output "DP-1"
-}
-
-workspace "databases" {
+workspace "work7" {
     open-on-output "DP-1"
 }
 
@@ -406,11 +412,52 @@ workspace "slack" {
     open-on-output "DP-2"
 }
 
-window-rule {
-    match app-id="firefox"
-    open-on-workspace "browser"
+workspace "work8" {
+    open-on-output "DP-2"
 }
 
+workspace "work9" {
+    open-on-output "DP-2"
+}
+
+workspace "work10" {
+    open-on-output "DP-2"
+}
+
+window-rule {
+    match app-id=r#"firefox$"#
+    open-on-workspace "browser"
+    open-maximized true
+}
+
+window-rule {
+    match app-id="codiumwhiu"
+    open-on-workspace "text"
+}
+
+window-rule {
+    match app-id="jetbrains-idea"
+    open-on-workspace "code"
+    open-maximized true
+}
+
+window-rule {
+    match app-id=r#"telegram"#
+    open-on-workspace "telegram"
+}
+
+window-rule {
+    match app-id=r#"spotify"#
+    open-on-workspace "spotify"
+}
+
+window-rule {
+    match app-id=r#"slack"#
+    open-on-workspace "slack"
+    open-floating true
+    default-floating-position x=20 y=20 relative-to="right"
+    default-column-width { proportion 0.5; }
+}
 
 window-rule {
     // Match all Telegram windows...
@@ -446,12 +493,13 @@ binds {
     // Suggested binds for running programs: terminal, app launcher, screen locker.
     Mod+Return hotkey-overlay-title="Open a Terminal: foot" { spawn "foot"; }
     Mod+D hotkey-overlay-title="Run an Application: fuzzel" { spawn "fuzzel"; }
+    Mod+B hotkey-overlay-title="Show Bar" { spawn "~/.config/niri/scripts/toggleWaybar.sh";}
     Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock"; }
 
     // Use spawn-sh to run a shell command. Do this if you need pipes, multiple commands, etc.
     // Note: the entire command goes as a single argument. It's passed verbatim to `sh -c`.
     // For example, this is a standard bind to toggle the screen reader (orca).
-    Super+Alt+S allow-when-locked=true hotkey-overlay-title=null { spawn-sh "pkill orca || exec orca"; }
+    // Super+Alt+S allow-when-locked=true hotkey-overlay-title=null { spawn-sh "pkill orca || exec orca"; }
 
     // Example volume keys mappings for PipeWire & WirePlumber.
     // The allow-when-locked=true property makes them work even when the session is locked.
@@ -472,8 +520,12 @@ binds {
     // Example brightness key mappings for brightnessctl.
     // You can use regular spawn with multiple arguments too (to avoid going through "sh"),
     // but you need to manually put each argument in separate "" quotes.
-    XF86MonBrightnessUp allow-when-locked=true { spawn "brightnessctl" "--class=backlight" "set" "+10%"; }
-    XF86MonBrightnessDown allow-when-locked=true { spawn "brightnessctl" "--class=backlight" "set" "10%-"; }
+    // XF86MonBrightnessUp allow-when-locked=true { spawn "brightnessctl" "--class=backlight" "set" "+10%"; }
+    // XF86MonBrightnessDown allow-when-locked=true { spawn "brightnessctl" "--class=backlight" "set" "10%-"; }
+    Ctrl+XF86MonBrightnessUp allow-when-locked=true { spawn-sh "ddcutil setvcp 10 85 --noverify --display 1 && ddcutil setvcp 10 85 --noverify --display 2"; }
+    XF86MonBrightnessUp allow-when-locked=true { spawn-sh "ddcutil setvcp 10 70 --noverify --display 1 && ddcutil setvcp 10 70 --noverify --display 2"; }
+    XF86MonBrightnessDown allow-when-locked=true { spawn-sh "ddcutil setvcp 10 40 --noverify --display 1 && ddcutil setvcp 10 40 --noverify --display 2"; }
+    Ctrl+XF86MonBrightnessDown allow-when-locked=true { spawn-sh "ddcutil setvcp 10 30 --noverify --display 1 && ddcutil setvcp 10 30 --noverify --display 2"; }
 
     // Open/close the Overview: a zoomed-out view of workspaces and windows.
     // You can also move the mouse into the top-left hot corner,
@@ -483,22 +535,22 @@ binds {
     Mod+Shift+Q repeat=false { close-window; }
 
     Mod+Left  { focus-column-left; }
-    Mod+Down  { focus-window-or-workspace-down; }
-    Mod+Up    { focus-window-or-workspace-up; }
+    Mod+Down  { focus-window-down; }
+    Mod+Up    { focus-window-up; }
     Mod+Right { focus-column-right; }
     Mod+H     { focus-column-left; }
     Mod+J     { focus-window-down; }
     Mod+K     { focus-window-up; }
     Mod+L     { focus-column-right; }
 
-    Mod+Ctrl+Left  { move-column-left; }
-    Mod+Ctrl+Down  { move-window-down; }
-    Mod+Ctrl+Up    { move-window-up; }
-    Mod+Ctrl+Right { move-column-right; }
-    Mod+Ctrl+H     { move-column-left; }
-    Mod+Ctrl+J     { move-window-down; }
-    Mod+Ctrl+K     { move-window-up; }
-    Mod+Ctrl+L     { move-column-right; }
+    Mod+Shift+Left  { move-column-left; }
+    Mod+Shift+Down  { move-window-down; }
+    Mod+Shift+Up    { move-window-up; }
+    Mod+Shift+Right { move-column-right; }
+    Mod+Shift+H     { move-column-left; }
+    Mod+Shift+J     { move-window-down; }
+    Mod+Shift+K     { move-window-up; }
+    Mod+Shift+L     { move-column-right; }
 
     // Alternative commands that move across workspaces when reaching
     // the first or last window in a column.
@@ -512,14 +564,14 @@ binds {
     Mod+Ctrl+Home { move-column-to-first; }
     Mod+Ctrl+End  { move-column-to-last; }
 
-    Mod+Shift+Left  { focus-monitor-left; }
-    Mod+Shift+Down  { focus-monitor-down; }
-    Mod+Shift+Up    { focus-monitor-up; }
-    Mod+Shift+Right { focus-monitor-right; }
-    Mod+Shift+H     { focus-monitor-left; }
-    Mod+Shift+J     { focus-monitor-down; }
-    Mod+Shift+K     { focus-monitor-up; }
-    Mod+Shift+L     { focus-monitor-right; }
+    // Mod+Shift+Left  { focus-monitor-left; }
+    // Mod+Shift+Down  { focus-monitor-down; }
+    // Mod+Shift+Up    { focus-monitor-up; }
+    // Mod+Shift+Right { focus-monitor-right; }
+    // Mod+Shift+H     { focus-monitor-left; }
+    // Mod+Shift+J     { focus-monitor-down; }
+    // Mod+Shift+K     { focus-monitor-up; }
+    // Mod+Shift+L     { focus-monitor-right; }
 
     Mod+Shift+Ctrl+Left  { move-column-to-monitor-left; }
     Mod+Shift+Ctrl+Down  { move-column-to-monitor-down; }
@@ -551,10 +603,10 @@ binds {
     // Mod+Ctrl+Page_Down { move-window-to-workspace-down; }
     // ...
 
-    Mod+Shift+Page_Down { move-workspace-down; }
-    Mod+Shift+Page_Up   { move-workspace-up; }
-    Mod+Shift+U         { move-workspace-down; }
-    Mod+Shift+I         { move-workspace-up; }
+    // Mod+Shift+Page_Down { move-workspace-down; }
+    // Mod+Shift+Page_Up   { move-workspace-up; }
+    // Mod+Shift+U         { move-workspace-down; }
+    // Mod+Shift+I         { move-workspace-up; }
 
     // You can bind mouse wheel scroll ticks using the following syntax.
     // These binds will change direction based on the natural-scroll setting.
@@ -597,24 +649,31 @@ binds {
     // For example, with 2 workspaces + 1 empty, indices 3, 4, 5 and so on
     // will all refer to the 3rd workspace.
 
-    Mod+1 { focus-workspace 1; }
-    Mod+2 { focus-workspace 2; }
-    Mod+3 { focus-workspace 3; }
-    Mod+4 { focus-workspace 4; }
-    Mod+5 { focus-workspace 5; }
-    Mod+6 { focus-workspace 6; }
-    Mod+7 { focus-workspace 7; }
-    Mod+8 { focus-workspace 8; }
-    Mod+9 { focus-workspace 9; }
-    Mod+Ctrl+1 { move-column-to-workspace 1; }
-    Mod+Ctrl+2 { move-column-to-workspace 2; }
-    Mod+Ctrl+3 { move-column-to-workspace 3; }
-    Mod+Ctrl+4 { move-column-to-workspace 4; }
-    Mod+Ctrl+5 { move-column-to-workspace 5; }
-    Mod+Ctrl+6 { move-column-to-workspace 6; }
-    Mod+Ctrl+7 { move-column-to-workspace 7; }
-    Mod+Ctrl+8 { move-column-to-workspace 8; }
-    Mod+Ctrl+9 { move-column-to-workspace 9; }
+    Mod+1 { focus-workspace "terminal"; }
+    Mod+2 { focus-workspace "browser"; }
+    Mod+3 { focus-workspace "text"; }
+    Mod+4 { focus-workspace "code"; }
+    Mod+5 { focus-workspace "files"; }
+    Mod+6 { focus-workspace "work6"; }
+    Mod+7 { focus-workspace "work7"; }
+    Mod+8 { focus-workspace "work8"; }
+    Mod+9 { focus-workspace "work9"; }
+    Mod+0 { focus-workspace "work10"; }
+    Mod+t { focus-workspace "telegram"; }  // Focus workspace named "telegram"
+    Mod+s { focus-workspace "spotify"; }   // Focus workspace named "spotify"
+    Mod+Shift+s { focus-workspace "slack"; }  // Focus workspace named "slack"
+
+    Mod+Shift+1 { move-column-to-workspace "terminal";}
+    Mod+Shift+2 { move-column-to-workspace "browser";}
+    Mod+Shift+3 { move-column-to-workspace "text";}
+    Mod+Shift+4 { move-column-to-workspace "code";}
+    Mod+Shift+5 { move-column-to-workspace "files";}
+    Mod+Shift+6 { move-column-to-workspace "work6";}
+    Mod+Shift+7 { move-column-to-workspace "work7";}
+    Mod+Shift+8 { move-column-to-workspace "work8";}
+    Mod+Shift+9 { move-column-to-workspace "work9";}
+    Mod+Shift+0 { move-column-to-workspace "work10";}
+
 
     // Alternatively, there are commands to move just a single window:
     // Mod+Ctrl+1 { move-window-to-workspace 1; }
@@ -682,9 +741,10 @@ binds {
     // Mod+Space       { switch-layout "next"; }
     // Mod+Shift+Space { switch-layout "prev"; }
 
-    Print { screenshot; }
-    Ctrl+Print { screenshot-screen; }
-    Alt+Print { screenshot-window; }
+    // Print { screenshot; }
+    // Ctrl+Print { screenshot-screen; }
+    // Alt+Print { screenshot-window; }
+    Print hotkey-overlay-title="Screenshot" { spawn-sh "grim -g \"$(slurp)\" - | swappy -f -"; }
 
     // Applications such as remote-desktop clients and software KVM switches may
     // request that niri stops processing the keyboard shortcuts defined here
