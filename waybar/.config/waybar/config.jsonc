@@ -8,11 +8,13 @@
     "spacing": 4, // Gaps between modules (4px)
     // Choose the order of the modules
     "modules-left": [
+        "niri/workspaces",
         "sway/workspaces",
         "sway/scratchpad"
     ],
     "modules-center": [
-        "sway/window"
+        "sway/window",
+        "niri/window"
     ],
     "modules-right": [
         "idle_inhibitor",
@@ -28,6 +30,25 @@
         "tray"
     ],
     // Modules configuration
+    "niri/workspaces": {
+        "all-outputs": true,
+        "format": "{icon}",
+        "format-icons": {
+            "terminal": "",
+            "browser": "",
+            "text": "󰦨",
+            "code": "",
+            "telegram": "",
+            "spotify": "",
+            "slack": "",
+            "work6": "󰬿",
+            "work7": "󰭀",
+            "work8": "󰭁",
+            "work9": "󰭂",
+            "work10": "󰿩",
+            "default": ""
+        }
+    },
     "sway/scratchpad": {
         "format": "{icon} {count}",
         "show-empty": false,

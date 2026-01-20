@@ -19,6 +19,14 @@ input {
             // If this section is empty, niri will fetch xkb settings
             // from org.freedesktop.locale1. You can control these using
             // localectl set-x11-keymap.
+
+            layout "us"
+            variant "altgr-intl"
+            // options "compose:ralt,ctrl:nocaps"
+            // model ""
+            // rules ""
+            // file "~/.config/keymap.xkb"
+
         }
 
         // Enable numlock on startup, omitting this setting disables it.
@@ -279,6 +287,12 @@ layout {
     }
 }
 
+gestures {
+    hot-corners {
+        off
+    }
+}
+
 // Add lines like this to spawn processes at startup.
 // Note that running niri as a session supports xdg-desktop-autostart,
 // which may be more convenient to use.
@@ -288,6 +302,7 @@ layout {
 // spawn-at-startup "waybar"
 
 
+spawn-sh-at-startup "~/.config/niri/scripts/idle.sh"
 spawn-sh-at-startup "~/.config/niri/scripts/fixSpotifyCacheLockAndStartSpotify.sh"
 spawn-sh-at-startup "~/.config/sway/scripts/wallpaper-changer.sh"
 spawn-sh-at-startup "firefox"
@@ -428,7 +443,7 @@ window-rule {
     match app-id=r#"foot$"#
     default-column-width { proportion 0.3333; }
     opacity 0.9
-}\
+}
 
 window-rule {
     match app-id=r#"firefox$"#
@@ -437,7 +452,7 @@ window-rule {
 }
 
 window-rule {
-    match app-id="codiumwhiu"
+    match app-id="codium"
     open-on-workspace "text"
 }
 
@@ -479,6 +494,25 @@ window-rule {
     match app-id="Spotify"
     open-on-workspace "spotify"
 }
+
+window-rule {
+    match title=r#"open File"#
+    match title=r#"save File"#
+    match title=r#"open Folder"#
+    match title=r#"save Folder"#
+    match title=r#"open As"#
+    match title=r#"save As"#
+    match title=r#"dialog"#
+    match title=r#"pop-up"#
+    open-floating true
+}
+
+window-rule {
+    match app-id="jetbrains-idea"
+    match is-floating=true
+    open-focused true
+}
+
 
 
 binds {
@@ -579,21 +613,22 @@ binds {
     // Mod+Shift+K     { focus-monitor-up; }
     // Mod+Shift+L     { focus-monitor-right; }
 
-    Mod+Shift+Ctrl+Left  { move-column-to-monitor-left; }
-    Mod+Shift+Ctrl+Down  { move-column-to-monitor-down; }
-    Mod+Shift+Ctrl+Up    { move-column-to-monitor-up; }
-    Mod+Shift+Ctrl+Right { move-column-to-monitor-right; }
-    Mod+Shift+Ctrl+H     { move-column-to-monitor-left; }
-    Mod+Shift+Ctrl+J     { move-column-to-monitor-down; }
-    Mod+Shift+Ctrl+K     { move-column-to-monitor-up; }
-    Mod+Shift+Ctrl+L     { move-column-to-monitor-right; }
+    Mod+Shift+Alt+Left  { move-column-to-monitor-left; }
+    Mod+Shift+Alt+Down  { move-column-to-monitor-down; }
+    Mod+Shift+Alt+Up    { move-column-to-monitor-up; }
+    Mod+Shift+Alt+Right { move-column-to-monitor-right; }
+    Mod+Shift+Alt+H     { move-column-to-monitor-left; }
+    Mod+Shift+Alt+J     { move-column-to-monitor-down; }
+    Mod+Shift+Alt+K     { move-column-to-monitor-up; }
+    Mod+Shift+Alt+L     { move-column-to-monitor-right; }
 
     // Alternatively, there are commands to move just a single window:
     // Mod+Shift+Ctrl+Left  { move-window-to-monitor-left; }
     // ...
 
     // And you can also move a whole workspace to another monitor:
-    // Mod+Shift+Ctrl+Left  { move-workspace-to-monitor-left; }
+    Mod+Shift+Ctrl+Left  { move-workspace-to-monitor-left; }
+    Mod+Shift+Ctrl+Right  { move-workspace-to-monitor-right; }
     // ...
 
     Mod+Page_Down      { focus-workspace-down; }
