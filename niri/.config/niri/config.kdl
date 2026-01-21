@@ -293,6 +293,10 @@ gestures {
     }
 }
 
+environment {
+    ELECTRON_OZONE_PLATFORM_HINT "auto"
+}
+
 // Add lines like this to spawn processes at startup.
 // Note that running niri as a session supports xdg-desktop-autostart,
 // which may be more convenient to use.
@@ -315,7 +319,7 @@ spawn-sh-at-startup "nm-applet --indicator"
 
 hotkey-overlay {
     // Uncomment this line to disable the "Important Hotkeys" pop-up at startup.
-    // skip-at-startup
+    skip-at-startup
 }
 
 // Uncomment this line to ask the clients to omit their client-side decorations if possible.

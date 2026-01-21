@@ -21,7 +21,7 @@ services:
       - "11434:11434"
 
     volumes:
-      - ${HOME}/.ollama:/root/.ollama
+      - /home/tom/.ollama:/root/.ollama
 
     #environment:
       # Optional: adjust for your GPU if needed
@@ -35,5 +35,5 @@ services:
     ports:
       - '3000:3000'
     volumes:
-      - ${HOME}/.perplexica/data:/home/perplexica/data
+      - /home/tom/.perplexica/data:/home/perplexica/data
     restart: unless-stopped
