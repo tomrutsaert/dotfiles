@@ -21,7 +21,7 @@ services:
       - "11434:11434"
 
     volumes:
-      - /home/tom/.ollama:/root/.ollama
+      - /home/tom/.ollama:/root/.ollama:Z
 
     #environment:
       # Optional: adjust for your GPU if needed
@@ -35,5 +35,73 @@ services:
     ports:
       - '3000:3000'
     volumes:
-      - /home/tom/.perplexica/data:/home/perplexica/data
+      - /home/tom/.perplexica/data:/home/perplexica/data:Z
     restart: unless-stopped
+    depends_on:
+      - ollama
+
+  anythingllm:
+    image: mintplexlabs/anythingllm
+    container_name: anythingllm
+    user: "1000:1000"
+    ports:
+    - "3001:3001"
+    cap_add:
+      - SYS_ADMIN
+    environment:
+    # Adjust for your environment
+      - STORAGE_DIR=/app/server/storage
+      - JWT_SECRET="make this a large list of random numbers and letters 20+"
+      - LLM_PROVIDER=ollama
+      - OLLAMA_BASE_PATH=http://ollama:11434
+      - OLLAMA_MODEL_PREF=qwen3:latest
+      - OLLAMA_MODEL_TOKEN_LIMIT=4096
+      - EMBEDDING_ENGINE=ollama
+      - EMBEDDING_BASE_PATH=http://ollama:11434
+      - EMBEDDING_MODEL_PREF=nomic-embed-text:latest
+      - EMBEDDING_MODEL_MAX_CHUNK_LENGTH=8192
+      - VECTOR_DB=lancedb
+      - WHISPER_PROVIDER=local
+      - TTS_PROVIDER=native
+      - PASSWORDMINCHAR=8
+      # Add any other keys here for services or settings
+      # you can find in the docker/.env.example file
+    volumes:
+      - /home/tom/.anythingllm:/app/server/storage:Z
+    restart: unless-stopped
+    depends_on:
+      - ollama
+
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: open-webui
+    restart: unless-stopped
+    ports:
+      - "3002:8080"
+    environment:
+      - OLLAMA_BASE_URL=http://ollama:11434
+    volumes:
+      - /home/tom/.open-webui:/app/backend/data:Z
+    depends_on:
+      - ollama
+
+  # comfyui:
+  #   image: ghcr.io/lecode-official/comfyui-docker:${IMAGE_TAG:-latest}
+  #   container_name: comfyui
+  #   restart: unless-stopped
+  #   environment:
+  #     USER_ID: "${USER_ID:-1000}"
+  #     GROUP_ID: "${GROUP_ID:-1000}"
+  #   ports:
+  #     - "8188:8188"
+  #   volumes:
+  #     - ${MODELS_PATH:-${HOME}/.comfyui/models}:/opt/comfyui/models:rw
+  #     - ${CUSTOM_NODES_PATH:-${HOME}/.comfyui/custom-nodes}:/opt/comfyui/custom_nodes:rw
+  #     - ${OUTPUT_PATH:-${HOME}/.comfyui/output}:/opt/comfyui/output:rw
+  #   deploy:
+  #     resources:
+  #       reservations:
+  #         devices:
+  #           - driver: nvidia
+  #             count: all
+  #             capabilities: [gpu]
