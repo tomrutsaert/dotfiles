@@ -1,0 +1,76 @@
+services:
+  llama:
+    image: ghcr.io/ggml-org/llama.cpp:server-rocm
+    container_name: llama-cpp-rocm
+    restart: no
+
+    ports:
+      - "18080:18080"
+
+    # ROCm device access
+    devices:
+      - /dev/kfd
+      - /dev/dri
+
+    group_add:
+      - video
+      - render
+
+    #environment:
+      # RDNA3 (RX 7900 GRE)
+      #- HSA_OVERRIDE_GFX_VERSION=11.0.0
+
+    volumes:
+      # Persist models here
+      - /home/tom/.llama.cpp/models:/models:Z
+      - /home/tom/.llama.cpp/.cache/huggingface:/root/.cache/huggingface:rw
+
+    # command: >
+    #   --host 0.0.0.0
+    #   --port 18080
+    #   --model /models/Ministral-3-14B-Instruct-2512-BF16.gguf
+    #   --device ROCm0
+      # --draft-model /models/Ministral-3-14B-Instruct-2512-Q2_K.gguf
+  # --draft-device ROCm0
+  # --n-draft 8
+
+    # command: >
+    #   --host 0.0.0.0
+    #   --port 18080
+    #   --model /models/gemma-3-1b-it-f16.gguf
+    #   --n-gpu-layers 0
+    #   --model-draft /models/gemma-3-1b-it-Q4_K_M.gguf
+    #   --device-draft ROCm0
+    #   --threads 16
+    #   --threads-batch 16
+
+    # command: >
+    #   --host 0.0.0.0
+    #   --port 18080
+    #   --model /models/Ministral-3-14B-Instruct-2512-Q2_K.gguf
+    #   --n-gpu-layers 0
+    #   --model-draft /models/Ministral-3-3B-Instruct-2512-UD-Q4_K_XL.gguf
+    #   --device-draft ROCm0
+    #   --threads 16
+    #   --threads-batch 16
+
+    #command: >
+    #  --host 0.0.0.0
+    #  --port 18080
+    #  --model /models/Ministral-3-8B-Instruct-2512-Q8_0.gguf
+    #  --device ROCm0
+
+    command: >
+      --host 0.0.0.0
+      --port 18080
+      --model /models/Ministral-3-8B-Instruct-2512-Q8_0.gguf
+      --device ROCm0
+      --model-draft /models/Ministral-3-3B-Instruct-2512-UD-Q4_K_XL.gguf
+      --device-draft ROCm0
+      --n-gpu-layers 30
+      --ctx-size 4096
+  
+
+    # command: >
+    #   --list-devices
+      

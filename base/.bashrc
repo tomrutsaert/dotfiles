@@ -54,7 +54,10 @@ alias cp='cp -i'
 alias mv='mv -i'
 
 # Use Vim instead of Vi
-alias vi='vim'
+alias vi='nvim'
+alias vim='nvim'
+
+export EDITOR=nvim
 
 alias ollama='docker exec -it ollama ollama'
 

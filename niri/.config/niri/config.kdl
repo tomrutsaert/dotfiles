@@ -449,6 +449,12 @@ workspace "work10" {
 }
 
 window-rule {
+    match app-id=r#"Alacritty$"#
+    default-column-width { proportion 0.3333; }
+    opacity 0.9
+}
+
+window-rule {
     match app-id=r#"foot$"#
     default-column-width { proportion 0.3333; }
     opacity 0.9
@@ -540,7 +546,7 @@ binds {
     Mod+Shift+Slash { show-hotkey-overlay; }
 
     // Suggested binds for running programs: terminal, app launcher, screen locker.
-    Mod+Return hotkey-overlay-title="Open a Terminal: foot" { spawn "foot"; }
+    Mod+Return hotkey-overlay-title="Open a Terminal: alacritty" { spawn "alacritty"; }
     Mod+D hotkey-overlay-title="Run an Application: fuzzel" { spawn "fuzzel"; }
     Mod+B hotkey-overlay-title="Show Bar" { spawn "~/.config/niri/scripts/toggleWaybar.sh";}
     Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock"; }
