@@ -1,0 +1,47 @@
+# ── GUI ─────────────────────────────────────────────────────
+gui:
+  theme:
+    activeBorderColor: ["#7aa2f7", "bold"] # Tokyo Night blue
+    inactiveBorderColor: ["#414868"]
+    selectedLineBgColor: ["#283457"]
+    cherryPickedCommitBgColor: ["#bb9af7"]
+    cherryPickedCommitFgColor: ["#1a1b26"]
+    unstagedChangesColor: ["#f7768e"]
+    defaultFgColor: ["#c0caf5"]
+  # Show file icons (requires Nerd Font)
+  nerdFontsVersion: "3"
+  # Side panel width (percentage)
+  sidePanelWidth: 0.25
+  # Show commit graph in branch/log view
+  showCommandLog: false
+  showBottomLine: false # hides the key-hint bar (cleaner look)
+  mouseEvents: true
+  expandFocusedSidePanel: false
+# ── Git ──────────────────────────────────────────────────────
+git:
+  pagers:
+    - colorArg: always
+      pager: delta --dark --paging=never # remove if you don't have delta
+  commit:
+    signOff: false
+  merging:
+    manualCommit: false
+    args: ""
+  # Auto-fetch every 60 seconds
+  autoFetch: true
+  autoFetchInterval: 60
+  # Auto-refresh when files change on disk
+  autoRefresh: true
+  branchLogCmd: "git log --graph --color=always --abbrev-commit --decorate --date=relative --pretty=medium {{branchName}} --"
+# ── OS ───────────────────────────────────────────────────────
+os:
+  # Open files in nvim
+  edit: "nvim {{filename}}"
+  editAtLine: "nvim +{{line}} {{filename}}"
+  editAtLineAndWait: "nvim +{{line}} {{filename}}"
+  suspend: true # suspend lazygit while editor is open (correct behaviour)
+# ── Keybindings (additions, not replacements) ────────────────
+keybinding:
+  universal:
+    quit: "q"
+    return: "<esc>"
