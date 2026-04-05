@@ -1,0 +1,86 @@
+# ── Window ──────────────────────────────────────────────────
+[window]
+padding = { x = 12, y = 12 }
+decorations = "buttonless"        # macOS: hide title bar, keep traffic lights
+                                  # Linux: use "none" for borderless
+opacity = 1.0
+dynamic_padding = false
+
+# ── Font ────────────────────────────────────────────────────
+[font]
+size = 12.0
+
+[font.normal]
+family = "JetBrainsMono Nerd Font"
+style  = "Regular"
+
+[font.bold]
+family = "JetBrainsMono Nerd Font"
+style  = "Bold"
+
+[font.italic]
+family = "JetBrainsMono Nerd Font"
+style  = "Italic"
+
+[font.bold_italic]
+family = "JetBrainsMono Nerd Font"
+style  = "Bold Italic"
+
+# ── Scrolling ────────────────────────────────────────────────
+[scrolling]
+history    = 10000
+multiplier = 3
+
+# ── Cursor ───────────────────────────────────────────────────
+[cursor]
+style = { shape = "Block", blinking = "On" }
+blink_interval  = 500
+unfocused_hollow = true
+
+# ── Terminal ─────────────────────────────────────────────────
+[terminal]
+osc52 = "CopyPaste"              # enables clipboard access from inside tmux/nvim
+
+# ── Colors ──────────────────────────────────────
+[colors.primary]
+background = '#141218'
+foreground = '#e6e0e9'
+
+[colors.selection]
+text = '#e6e0e9'
+background = '#4f378b'
+
+[colors.cursor]
+text = '#141218'
+cursor = '#d0bcff'
+
+[colors.normal]
+black   = '#141218'
+red     = '#df5141'
+green   = '#6ed675'
+yellow  = '#dbd97b'
+blue    = '#926ce2'
+magenta = '#a397bf'
+cyan    = '#D0BCFF'
+white   = '#abb2bf'
+
+[colors.bright]
+black   = '#5c6370'
+red     = '#e06a5f'
+green   = '#86e08b'
+yellow  = '#e8e697'
+blue    = '#dfc9ff'
+magenta = '#7c6acd'
+cyan    = '#8b6ab5'
+white   = '#ffffff'
+
+# ── Selection ────────────────────────────────────────────────
+[selection]
+save_to_clipboard = true         # selected text auto-copies
+
+# ── Keyboard ─────────────────────────────────────────────────
+[keyboard]
+bindings = [
+  # Cmd+K → clear scrollback (macOS)
+  { key = "K", mods = "Command", action = "ClearHistory" },
+]
