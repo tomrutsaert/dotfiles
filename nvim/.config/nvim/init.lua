@@ -122,6 +122,11 @@ vim.o.breakindent = true
 -- Enable undo/redo changes even after closing and reopening a file
 vim.o.undofile = true
 
+-- Autosave when switching buffers or losing focus
+vim.api.nvim_create_autocmd({ 'BufLeave', 'FocusLost', 'QuitPre' }, {
+  command = 'silent! wa',
+})
+
 -- Case-insensitive searching UNLESS \C or one or more capital letters in the search term
 vim.o.ignorecase = true
 vim.o.smartcase = true

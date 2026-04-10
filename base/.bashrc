@@ -76,6 +76,82 @@ eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 eval "$(starship init bash)"
 eval "$(zoxide init bash)"
 
+dev() {
+    local project="$1"
+    local worktree="$2"
+    if [ -z "$project" ]; then
+        echo "Usage: dev <project> [worktree]"
+        return 1
+    fi
+
+    local projects_file="$HOME/projects/doccle/doccle-dev-containers/projects.yaml"
+    local dev_containers_dir="$HOME/projects/doccle/doccle-dev-containers"
+
+    # Parse directory from projects.yaml
+    local project_dir
+    project_dir=$(awk -v proj="$project" '
+        $0 ~ "^  " proj ":" { found=1; next }
+        found && /directory:/ { gsub(/^ *directory: */, ""); print; exit }
+        found && /^  [a-z]/ { exit }
+    ' "$projects_file")
+
+    if [ -z "$project_dir" ]; then
+        echo "Project '$project' not found in $projects_file"
+        return 1
+    fi
+
+    # Expand ~ to $HOME
+    project_dir="${project_dir/#\~/$HOME}"
+
+    local session="$project"
+    local wt_arg=""
+    if [ -n "$worktree" ]; then
+        session="$project-$worktree"
+        wt_arg="wt=$worktree"
+        # Create worktree via make run (this creates the worktree directory)
+        local worktree_dir="${project_dir}-${worktree}"
+        if [ ! -d "$worktree_dir" ]; then
+            echo "Creating worktree '$worktree' for $project..."
+            make -C "$dev_containers_dir" run "$project" "$wt_arg"
+        fi
+        project_dir="$worktree_dir"
+    fi
+
+    # Open IntelliJ in the background
+    idea "$project_dir" &>/dev/null &
+
+    if tmux has-session -t "$session" 2>/dev/null; then
+        tmux attach-session -t "$session"
+        return
+    fi
+
+    # Window 1: lazygit
+    tmux new-session -d -s "$session" -c "$project_dir" -n "git"
+    tmux send-keys -t "$session:git" "lazygit" Enter
+
+    # Window 2: make install (if available)
+    tmux new-window -t "$session" -c "$project_dir" -n "install"
+    if [ -f "$project_dir/Makefile" ] && grep -q '^install:' "$project_dir/Makefile"; then
+        tmux send-keys -t "$session:install" "make install" Enter
+    fi
+
+    # Start the dev container before claude/codex to avoid race condition
+    make -C "$dev_containers_dir" run "$project" $wt_arg
+    sleep 0.5
+
+    # Window 3: make claude
+    tmux new-window -t "$session" -c "$dev_containers_dir" -n "claude"
+    tmux send-keys -t "$session:claude" "make claude $project $wt_arg" Enter
+
+    # Window 4: make codex
+    tmux new-window -t "$session" -c "$dev_containers_dir" -n "codex"
+    tmux send-keys -t "$session:codex" "make codex $project $wt_arg" Enter
+
+    # Attach to session
+    tmux select-window -t "$session:claude"
+    tmux attach-session -t "$session"
+}
+
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"

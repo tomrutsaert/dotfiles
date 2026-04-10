@@ -524,6 +524,11 @@ window-rule {
 
 window-rule {
     match app-id="jetbrains-idea"
+    open-focused false
+}
+
+window-rule {
+    match app-id="jetbrains-idea"
     match is-floating=true
     open-focused true
 }

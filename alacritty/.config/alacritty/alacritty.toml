@@ -83,4 +83,6 @@ save_to_clipboard = true         # selected text auto-copies
 bindings = [
   # Cmd+K → clear scrollback (macOS)
   { key = "K", mods = "Command", action = "ClearHistory" },
+  # Shift+Enter → send distinct escape sequence so CLI tools can distinguish it
+  { key = "Return", mods = "Shift", chars = "\u001b[13;2u" },
 ]
