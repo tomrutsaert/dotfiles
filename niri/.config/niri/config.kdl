@@ -308,7 +308,7 @@ environment {
 
 spawn-sh-at-startup "~/.config/niri/scripts/idle.sh"
 spawn-sh-at-startup "~/.config/niri/scripts/fixSpotifyCacheLockAndStartSpotify.sh"
-spawn-sh-at-startup "~/.config/sway/scripts/wallpaper-changer.sh"
+spawn-sh-at-startup "~/.config/niri/scripts/wallpaper-changer.sh"
 spawn-sh-at-startup "firefox"
 spawn-sh-at-startup "flatpak run com.slack.Slack"
 spawn-sh-at-startup "flatpak run org.telegram.desktop"
