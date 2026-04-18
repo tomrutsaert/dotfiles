@@ -754,6 +754,6 @@ binds {
 }
 
 // Host-specific configuration (outputs, workspace placement, slack rule,
-// brightness binds) lives in ~/.config/niri/host.kdl, installed by the
-// niri-desktop or niri-laptop stow package.
-include "~/.config/niri/host.kdl"
+// brightness binds) lives in host.kdl, installed by the niri-desktop or
+// niri-laptop stow package alongside this config.
+include "host.kdl"

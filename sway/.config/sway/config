@@ -36,8 +36,9 @@ set $menu $rofi_cmd -show combi -combi-modes drun -modes combi
 # You can get the names of your outputs by running: swaymsg -t get_outputs
 #output Virtual-1 resolution 2560x1080 position 0,0
 # Host-specific outputs, $mainMonitor/$secondaryMonitor, and swayidle are
-# defined in ~/.config/sway/host.conf, installed by sway-desktop or sway-laptop.
-include ~/.config/sway/host.conf
+# defined in host.conf, installed by sway-desktop or sway-laptop alongside
+# this config.
+include host.conf
 
 ### Input configuration
 #
