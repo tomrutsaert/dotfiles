@@ -8,12 +8,9 @@
     "spacing": 4, // Gaps between modules (4px)
     // Choose the order of the modules
     "modules-left": [
-        "niri/workspaces",
-        "sway/workspaces",
-        "sway/scratchpad"
+        "niri/workspaces"
     ],
     "modules-center": [
-        "sway/window",
         "niri/window"
     ],
     "modules-right": [
