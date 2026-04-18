@@ -1,0 +1,83 @@
+// Desktop-specific niri config (loaded via include from config.kdl).
+
+output "DP-1" {
+    mode "3840x2160"
+    scale 1.0
+    transform "normal"
+    position x=0 y=0
+    focus-at-startup
+}
+
+output "DP-2" {
+    mode "3840x2160"
+    scale 1.0
+    transform "normal"
+    position x=-3840 y=0
+}
+
+workspace "terminal" {
+    open-on-output "DP-1"
+}
+
+workspace "browser" {
+    open-on-output "DP-1"
+}
+
+workspace "text" {
+    open-on-output "DP-1"
+}
+
+workspace "code" {
+    open-on-output "DP-1"
+}
+
+workspace "files" {
+    open-on-output "DP-1"
+}
+
+workspace "work6" {
+    open-on-output "DP-1"
+}
+
+workspace "work7" {
+    open-on-output "DP-1"
+}
+
+workspace "spotify" {
+    open-on-output "DP-1"
+}
+
+workspace "telegram" {
+    open-on-output "DP-1"
+}
+
+workspace "slack" {
+    open-on-output "DP-2"
+}
+
+workspace "work8" {
+    open-on-output "DP-2"
+}
+
+workspace "work9" {
+    open-on-output "DP-2"
+}
+
+workspace "work10" {
+    open-on-output "DP-2"
+}
+
+window-rule {
+    match app-id=r#"slack"#
+    open-on-workspace "slack"
+    open-floating true
+    default-floating-position x=20 y=20 relative-to="right"
+    default-column-width { proportion 0.5; }
+}
+
+binds {
+    Ctrl+XF86MonBrightnessUp allow-when-locked=true { spawn-sh "ddcutil setvcp 10 85 --noverify --display 1 && ddcutil setvcp 10 85 --noverify --display 2"; }
+    XF86MonBrightnessUp allow-when-locked=true { spawn-sh "ddcutil setvcp 10 70 --noverify --display 1 && ddcutil setvcp 10 70 --noverify --display 2"; }
+    XF86MonBrightnessDown allow-when-locked=true { spawn-sh "ddcutil setvcp 10 40 --noverify --display 1 && ddcutil setvcp 10 40 --noverify --display 2"; }
+    Ctrl+XF86MonBrightnessDown allow-when-locked=true { spawn-sh "ddcutil setvcp 10 30 --noverify --display 1 && ddcutil setvcp 10 30 --noverify --display 2"; }
+}

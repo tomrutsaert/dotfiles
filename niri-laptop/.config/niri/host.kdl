@@ -1,0 +1,72 @@
+// Laptop-specific niri config (loaded via include from config.kdl).
+
+output "eDP-1" {
+    mode "1920x1080"
+    scale 1.0
+    transform "normal"
+    position x=0 y=0
+    focus-at-startup
+}
+
+workspace "terminal" {
+    open-on-output "eDP-1"
+}
+
+workspace "browser" {
+    open-on-output "eDP-1"
+}
+
+workspace "text" {
+    open-on-output "eDP-1"
+}
+
+workspace "code" {
+    open-on-output "eDP-1"
+}
+
+workspace "files" {
+    open-on-output "eDP-1"
+}
+
+workspace "work6" {
+    open-on-output "eDP-1"
+}
+
+workspace "work7" {
+    open-on-output "eDP-1"
+}
+
+workspace "spotify" {
+    open-on-output "eDP-1"
+}
+
+workspace "telegram" {
+    open-on-output "eDP-1"
+}
+
+workspace "slack" {
+    open-on-output "eDP-1"
+}
+
+workspace "work8" {
+    open-on-output "eDP-1"
+}
+
+workspace "work9" {
+    open-on-output "eDP-1"
+}
+
+workspace "work10" {
+    open-on-output "eDP-1"
+}
+
+window-rule {
+    match app-id=r#"slack"#
+    open-on-workspace "slack"
+    open-maximized true
+}
+
+binds {
+    XF86MonBrightnessUp allow-when-locked=true { spawn "brightnessctl" "--class=backlight" "set" "+10%"; }
+    XF86MonBrightnessDown allow-when-locked=true { spawn "brightnessctl" "--class=backlight" "set" "10%-"; }
+}

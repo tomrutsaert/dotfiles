@@ -114,20 +114,7 @@ input {
     position x=1280 y=0
 }
 
-output "DP-1" {
-    mode "3840x2160"
-    scale 1.0
-    transform "normal"
-    position x=0 y=0
-    focus-at-startup
-}
-
-output "DP-2" {
-    mode "3840x2160"
-    scale 1.0
-    transform "normal"
-    position x=-3840 y=0
-}
+// Host-specific outputs are defined in host.kdl (included at end).
 
 // Settings that influence how windows are positioned and sized.
 // Find more information on the wiki:
@@ -397,57 +384,7 @@ window-rule {
 }
 
 
-workspace "terminal" {
-    open-on-output "DP-1"
-}
-
-workspace "browser" {
-    open-on-output "DP-1"
-}
-
-workspace "text" {
-    open-on-output "DP-1"
-}
-
-workspace "code" {
-    open-on-output "DP-1"
-}
-
-workspace "files" {
-    open-on-output "DP-1"
-}
-
-workspace "work6" {
-    open-on-output "DP-1"
-}
-
-workspace "work7" {
-    open-on-output "DP-1"
-}
-
-workspace "spotify" {
-    open-on-output "DP-1"
-}
-
-workspace "telegram" {
-    open-on-output "DP-1"
-}
-
-workspace "slack" {
-    open-on-output "DP-2"
-}
-
-workspace "work8" {
-    open-on-output "DP-2"
-}
-
-workspace "work9" {
-    open-on-output "DP-2"
-}
-
-workspace "work10" {
-    open-on-output "DP-2"
-}
+// Host-specific workspace-to-output assignments are defined in host.kdl.
 
 window-rule {
     match app-id=r#"Alacritty$"#
@@ -488,13 +425,7 @@ window-rule {
     open-on-workspace "spotify"
 }
 
-window-rule {
-    match app-id=r#"slack"#
-    open-on-workspace "slack"
-    open-floating true
-    default-floating-position x=20 y=20 relative-to="right"
-    default-column-width { proportion 0.5; }
-}
+// Host-specific slack window-rule is defined in host.kdl.
 
 window-rule {
     // Match all Telegram windows...
@@ -581,12 +512,7 @@ binds {
     // Example brightness key mappings for brightnessctl.
     // You can use regular spawn with multiple arguments too (to avoid going through "sh"),
     // but you need to manually put each argument in separate "" quotes.
-    // XF86MonBrightnessUp allow-when-locked=true { spawn "brightnessctl" "--class=backlight" "set" "+10%"; }
-    // XF86MonBrightnessDown allow-when-locked=true { spawn "brightnessctl" "--class=backlight" "set" "10%-"; }
-    Ctrl+XF86MonBrightnessUp allow-when-locked=true { spawn-sh "ddcutil setvcp 10 85 --noverify --display 1 && ddcutil setvcp 10 85 --noverify --display 2"; }
-    XF86MonBrightnessUp allow-when-locked=true { spawn-sh "ddcutil setvcp 10 70 --noverify --display 1 && ddcutil setvcp 10 70 --noverify --display 2"; }
-    XF86MonBrightnessDown allow-when-locked=true { spawn-sh "ddcutil setvcp 10 40 --noverify --display 1 && ddcutil setvcp 10 40 --noverify --display 2"; }
-    Ctrl+XF86MonBrightnessDown allow-when-locked=true { spawn-sh "ddcutil setvcp 10 30 --noverify --display 1 && ddcutil setvcp 10 30 --noverify --display 2"; }
+    // Host-specific brightness binds are defined in host.kdl.
 
     // Open/close the Overview: a zoomed-out view of workspaces and windows.
     // You can also move the mouse into the top-left hot corner,
@@ -826,3 +752,8 @@ binds {
     // moving the mouse or pressing any other key.
     Mod+Shift+P { power-off-monitors; }
 }
+
+// Host-specific configuration (outputs, workspace placement, slack rule,
+// brightness binds) lives in ~/.config/niri/host.kdl, installed by the
+// niri-desktop or niri-laptop stow package.
+include "~/.config/niri/host.kdl"
