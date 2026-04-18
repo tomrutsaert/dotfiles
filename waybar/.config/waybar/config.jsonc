@@ -95,14 +95,14 @@
     },
     "custom/mouse-battery-logi": {
         "exec": "d=$(upower -e | grep -i -m1 hidpp); [ -z \"$d\" ] && exit 0; p=$(upower -i \"$d\" | awk '/percentage:/ {gsub(/%/,\"\",$2); print $2; exit}'); [ -z \"$p\" ] && exit 0; if [ \"$p\" -ge 80 ]; then i=\"\"; elif [ \"$p\" -ge 60 ]; then i=\"\"; elif [ \"$p\" -ge 40 ]; then i=\"\"; elif [ \"$p\" -ge 20 ]; then i=\"\"; else i=\"\"; fi; printf '%s%% %s' \"$p\" \"$i\"",
-        "format": "󰍝 {}",
+        "format": "󰍽ᴸ {}",
         "interval": 60,
         "tooltip": true,
         "tooltip-format": "Logitech mouse"
     },
     "custom/mouse-battery-razer": {
         "exec": "p=$(~/scripts/razer-battery.py 2>/dev/null); [ -z \"$p\" ] && exit 0; if [ \"$p\" -ge 80 ]; then i=\"\"; elif [ \"$p\" -ge 60 ]; then i=\"\"; elif [ \"$p\" -ge 40 ]; then i=\"\"; elif [ \"$p\" -ge 20 ]; then i=\"\"; else i=\"\"; fi; printf '%s%% %s' \"$p\" \"$i\"",
-        "format": "󰢹 {}",
+        "format": "󰍽ᴿ {}",
         "interval": 60,
         "tooltip": true,
         "tooltip-format": "Razer mouse"
