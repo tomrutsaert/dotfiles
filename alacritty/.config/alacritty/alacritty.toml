@@ -1,8 +1,7 @@
 # ── Window ──────────────────────────────────────────────────
 [window]
 padding = { x = 12, y = 12 }
-decorations = "buttonless"        # macOS: hide title bar, keep traffic lights
-                                  # Linux: use "none" for borderless
+decorations = "None"              # borderless (no title bar)
 opacity = 1.0
 dynamic_padding = false
 
@@ -81,8 +80,8 @@ save_to_clipboard = true         # selected text auto-copies
 # ── Keyboard ─────────────────────────────────────────────────
 [keyboard]
 bindings = [
-  # Cmd+K → clear scrollback (macOS)
-  { key = "K", mods = "Command", action = "ClearHistory" },
+  # Ctrl+Shift+K → clear scrollback
+  { key = "K", mods = "Control|Shift", action = "ClearHistory" },
   # Shift+Enter → send distinct escape sequence so CLI tools can distinguish it
   { key = "Return", mods = "Shift", chars = "\u001b[13;2u" },
 ]

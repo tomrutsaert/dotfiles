@@ -306,6 +306,7 @@ environment {
 // spawn-at-startup "waybar"
 
 
+spawn-sh-at-startup "wl-paste --primary --watch wl-copy"
 spawn-sh-at-startup "~/.config/niri/scripts/idle.sh"
 spawn-sh-at-startup "~/.config/niri/scripts/fixSpotifyCacheLockAndStartSpotify.sh"
 spawn-sh-at-startup "~/.config/niri/scripts/wallpaper-changer.sh"

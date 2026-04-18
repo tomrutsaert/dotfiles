@@ -77,11 +77,25 @@ eval "$(starship init bash)"
 eval "$(zoxide init bash)"
 
 dev() {
-    local project="$1"
-    local worktree="$2"
-    if [ -z "$project" ]; then
-        echo "Usage: dev <project> [worktree]"
+    local open_idea=0
+    local input=""
+    while [ $# -gt 0 ]; do
+        case "$1" in
+            -i) open_idea=1 ;;
+            -*) echo "Unknown option: $1"; return 1 ;;
+            *) input="$1" ;;
+        esac
+        shift
+    done
+
+    if [ -z "$input" ]; then
+        echo "Usage: dev [-i] <project>[@worktree]"
         return 1
+    fi
+    local project="${input%%@*}"
+    local worktree=""
+    if [[ "$input" == *"@"* ]]; then
+        worktree="${input#*@}"
     fi
 
     local projects_file="$HOME/projects/doccle/doccle-dev-containers/projects.yaml"
@@ -104,21 +118,23 @@ dev() {
     project_dir="${project_dir/#\~/$HOME}"
 
     local session="$project"
-    local wt_arg=""
+    local project_arg="$project"
     if [ -n "$worktree" ]; then
         session="$project-$worktree"
-        wt_arg="wt=$worktree"
+        project_arg="$project@$worktree"
         # Create worktree via make run (this creates the worktree directory)
         local worktree_dir="${project_dir}-${worktree}"
         if [ ! -d "$worktree_dir" ]; then
             echo "Creating worktree '$worktree' for $project..."
-            make -C "$dev_containers_dir" run "$project" "$wt_arg"
+            make -C "$dev_containers_dir" run "$project_arg"
         fi
         project_dir="$worktree_dir"
     fi
 
-    # Open IntelliJ in the background
-    idea "$project_dir" &>/dev/null &
+    # Open IntelliJ in the background (only with -i)
+    if [ "$open_idea" = "1" ]; then
+        gtk-launch jetbrains-idea "$project_dir" &>/dev/null &
+    fi
 
     if tmux has-session -t "$session" 2>/dev/null; then
         tmux attach-session -t "$session"
@@ -136,16 +152,16 @@ dev() {
     fi
 
     # Start the dev container before claude/codex to avoid race condition
-    make -C "$dev_containers_dir" run "$project" $wt_arg
+    make -C "$dev_containers_dir" run "$project_arg"
     sleep 0.5
 
     # Window 3: make claude
     tmux new-window -t "$session" -c "$dev_containers_dir" -n "claude"
-    tmux send-keys -t "$session:claude" "make claude $project $wt_arg" Enter
+    tmux send-keys -t "$session:claude" "make claude $project_arg" Enter
 
     # Window 4: make codex
     tmux new-window -t "$session" -c "$dev_containers_dir" -n "codex"
-    tmux send-keys -t "$session:codex" "make codex $project $wt_arg" Enter
+    tmux send-keys -t "$session:codex" "make codex $project_arg" Enter
 
     # Attach to session
     tmux select-window -t "$session:claude"
