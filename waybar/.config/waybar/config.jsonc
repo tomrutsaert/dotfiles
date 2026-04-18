@@ -25,7 +25,8 @@
 //        "memory",
     //    "temperature",
     //    "backlight",
-        "battery",
+        "custom/mouse-battery-logi",
+        "custom/mouse-battery-razer",
         "clock",
         "tray"
     ],
@@ -92,24 +93,19 @@
         "format": "{percent}% {icon}",
         "format-icons": ["🌑", "🌘", "🌗", "🌖", "🌕"]
     },
-    "battery": {
-	    "bat": "hidpp_battery_0",    
-        "states": {
-            // "good": 95,
-            "warning": 30,
-            "critical": 15
-        },
-        "format": "{capacity}% {icon}",
-        "format-full": "{capacity}% {icon}",
-        "format-charging": "{capacity}% ",
-        "format-plugged": "{capacity}% ",
-        "format-alt": "{time} {icon}",
-        // "format-good": "", // An empty format will hide the module
-        // "format-full": "",
-        "format-icons": ["", "", "", "", ""]
+    "custom/mouse-battery-logi": {
+        "exec": "d=$(upower -e | grep -i -m1 hidpp); [ -z \"$d\" ] && exit 0; p=$(upower -i \"$d\" | awk '/percentage:/ {gsub(/%/,\"\",$2); print $2; exit}'); [ -z \"$p\" ] && exit 0; if [ \"$p\" -ge 80 ]; then i=\"\"; elif [ \"$p\" -ge 60 ]; then i=\"\"; elif [ \"$p\" -ge 40 ]; then i=\"\"; elif [ \"$p\" -ge 20 ]; then i=\"\"; else i=\"\"; fi; printf '%s%% %s' \"$p\" \"$i\"",
+        "format": "󰍝 {}",
+        "interval": 60,
+        "tooltip": true,
+        "tooltip-format": "Logitech mouse"
     },
-    "battery#bat2": {
-        "bat": "BAT2"
+    "custom/mouse-battery-razer": {
+        "exec": "p=$(~/scripts/razer-battery.py 2>/dev/null); [ -z \"$p\" ] && exit 0; if [ \"$p\" -ge 80 ]; then i=\"\"; elif [ \"$p\" -ge 60 ]; then i=\"\"; elif [ \"$p\" -ge 40 ]; then i=\"\"; elif [ \"$p\" -ge 20 ]; then i=\"\"; else i=\"\"; fi; printf '%s%% %s' \"$p\" \"$i\"",
+        "format": "󰢹 {}",
+        "interval": 60,
+        "tooltip": true,
+        "tooltip-format": "Razer mouse"
     },
     "power-profiles-daemon": {
       "format": "{icon}",
