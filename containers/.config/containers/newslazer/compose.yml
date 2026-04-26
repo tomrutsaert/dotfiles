@@ -1,0 +1,50 @@
+services:
+  newslazer:
+    build:
+      context: .
+      args:
+        UID: "1000"
+        GID: "1000"
+    image: localhost/newslazer:latest
+    container_name: newslazer
+
+    # Interactive GUI app — run via `podman-compose run --rm newslazer`
+    # (not `up -d`).
+    stdin_open: true
+    tty: true
+
+    # Rootless: map container UID 1000 back to the host user.
+    userns_mode: keep-id
+
+    # SELinux: Fedora labels block the X11 socket bind mount otherwise.
+    security_opt:
+      - label=disable
+
+    # GPU for Qt/OpenGL rendering
+    devices:
+      - /dev/dri
+
+    # The bundled Qt5 only ships the xcb platform plugin, so we route through
+    # XWayland via the host's X11 unix socket, not the native Wayland socket.
+    environment:
+      - DISPLAY=${DISPLAY:-:0}
+      - QT_QPA_PLATFORM=xcb
+
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+
+      # Persistent install dir — survives container recreation.
+      # On first run the entrypoint downloads Newslazer directly from the
+      # vendor CDN and unpacks it here.
+      - newslazer-install:/opt/newslazer
+
+      # App config / profile — keeps settings between runs.
+      - newslazer-home:/home/app/.config
+
+      # NZB download target — SABnzbd watch dir. Newslazer drops .nzb
+      # files here and SABnzbd auto-picks them up.
+      - ${HOME}/appdata/echo/appdata/sabnzbd/config/watch:/home/app/Downloads:Z
+
+volumes:
+  newslazer-install:
+  newslazer-home:

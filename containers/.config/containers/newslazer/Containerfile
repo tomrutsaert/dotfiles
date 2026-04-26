@@ -1,0 +1,35 @@
+FROM registry.fedoraproject.org/fedora:43
+
+# Matches host Fedora version. Newslazer is a linuxdeploy-packaged AppImage
+# that bundles its own Qt5 with *only* the xcb platform plugin — no wayland —
+# so the container talks to the host XWayland socket. System Qt packages
+# here just pull in the right X11/xcb/GL/font transitive deps; the bundled
+# libs inside squashfs-root take over at runtime via rpath.
+RUN dnf install -y --setopt=install_weak_deps=False \
+      qt5-qtbase-gui \
+      libxkbcommon libxkbcommon-x11 \
+      libX11 libXext libXrender libXrandr libXfixes libXcursor libXi libXtst \
+      mesa-libGL mesa-libEGL mesa-dri-drivers libglvnd-egl \
+      fontconfig freetype dejavu-sans-fonts harfbuzz \
+      alsa-lib pipewire-libs \
+      dbus-libs nss \
+      ca-certificates xdg-utils \
+      curl unzip jq coreutils \
+    && dnf clean all
+
+ARG UID=1000
+ARG GID=1000
+RUN groupadd -g ${GID} app \
+ && useradd  -m -u ${UID} -g ${GID} -s /bin/bash app \
+ && mkdir -p /opt/newslazer /opt/installer /home/app/Downloads \
+ && chown -R app:app /opt/newslazer /home/app
+
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+USER app
+WORKDIR /home/app
+
+ENV QT_QPA_PLATFORM=xcb
+
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
