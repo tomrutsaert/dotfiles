@@ -1,5 +1,13 @@
 # .bashrc
 
+if [ -x /home/linuxbrew/.linuxbrew/bin/brew ]; then
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+
+    if [ -r /home/linuxbrew/.linuxbrew/etc/profile.d/bash_completion.sh ]; then
+        . /home/linuxbrew/.linuxbrew/etc/profile.d/bash_completion.sh
+    fi
+fi
+
 # Source global definitions
 if [ -f /etc/bashrc ]; then
 	. /etc/bashrc
@@ -63,10 +71,6 @@ alias ollama='docker exec -it ollama ollama'
 
 unset rc
 
-if [ -f /usr/share/bash-completion/bash_completion ]; then
-    . /usr/share/bash-completion/bash_completion
-fi
-
 if [ -x "$HOME/work/scripts/dev" ]; then
     alias dev="$HOME/work/scripts/dev"
 fi
@@ -77,7 +81,6 @@ if [ -x "$HOME/work/scripts/doccle-local" ]; then
     alias doccle-local-reset="$HOME/work/scripts/doccle-local reset"
 fi
 
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 eval "$(starship init bash)"
 eval "$(zoxide init bash)"
 
