@@ -1,0 +1,36 @@
+// Personal Zellij configuration managed by GNU Stow from the dotfiles repo.
+//
+// Keep this file focused on deliberate overrides. Zellij's built-in defaults
+// provide the full keymap, plugin aliases, and tmux-mode bindings.
+
+default_layout "default"
+default_mode "normal"
+
+pane_frames true
+auto_layout true
+mouse_mode true
+scroll_buffer_size 10000
+
+copy_clipboard "system"
+copy_on_select true
+
+on_force_close "detach"
+session_serialization true
+serialize_pane_viewport false
+
+simplified_ui true
+show_release_notes false
+show_startup_tips false
+
+// Keep web sharing opt-in only.
+web_server false
+web_sharing "off"
+
+// Keep the default keybindings, including Ctrl-b tmux mode, and add a few
+// direct split shortcuts that mirror the tmux config muscle memory.
+keybinds {
+    shared_except "locked" {
+        bind "Alt |" { NewPane "Right"; }
+        bind "Alt -" { NewPane "Down"; }
+    }
+}

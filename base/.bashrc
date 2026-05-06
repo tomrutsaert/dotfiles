@@ -67,106 +67,19 @@ if [ -f /usr/share/bash-completion/bash_completion ]; then
     . /usr/share/bash-completion/bash_completion
 fi
 
-# Doccle specific
-if [ -f "$HOME/secrets/doccle/setenv" ]; then
-    source "$HOME/secrets/doccle/setenv"
+if [ -x "$HOME/work/scripts/dev" ]; then
+    alias dev="$HOME/work/scripts/dev"
+fi
+
+if [ -x "$HOME/work/scripts/doccle-local" ]; then
+    alias doccle-local="$HOME/work/scripts/doccle-local"
+    alias doccle-local-kill="$HOME/work/scripts/doccle-local kill"
+    alias doccle-local-reset="$HOME/work/scripts/doccle-local reset"
 fi
 
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 eval "$(starship init bash)"
 eval "$(zoxide init bash)"
-
-dev() {
-    local open_idea=0
-    local input=""
-    while [ $# -gt 0 ]; do
-        case "$1" in
-            -i) open_idea=1 ;;
-            -*) echo "Unknown option: $1"; return 1 ;;
-            *) input="$1" ;;
-        esac
-        shift
-    done
-
-    if [ -z "$input" ]; then
-        echo "Usage: dev [-i] <project>[@worktree]"
-        return 1
-    fi
-    local project="${input%%@*}"
-    local worktree=""
-    if [[ "$input" == *"@"* ]]; then
-        worktree="${input#*@}"
-    fi
-
-    local projects_file="$HOME/projects/doccle/doccle-dev-containers/projects.yaml"
-    local dev_containers_dir="$HOME/projects/doccle/doccle-dev-containers"
-
-    # Parse directory from projects.yaml
-    local project_dir
-    project_dir=$(awk -v proj="$project" '
-        $0 ~ "^  " proj ":" { found=1; next }
-        found && /directory:/ { gsub(/^ *directory: */, ""); print; exit }
-        found && /^  [a-z]/ { exit }
-    ' "$projects_file")
-
-    if [ -z "$project_dir" ]; then
-        echo "Project '$project' not found in $projects_file"
-        return 1
-    fi
-
-    # Expand ~ to $HOME
-    project_dir="${project_dir/#\~/$HOME}"
-
-    local session="$project"
-    local project_arg="$project"
-    if [ -n "$worktree" ]; then
-        session="$project-$worktree"
-        project_arg="$project@$worktree"
-        # Create worktree via make run (this creates the worktree directory)
-        local worktree_dir="${project_dir}-${worktree}"
-        if [ ! -d "$worktree_dir" ]; then
-            echo "Creating worktree '$worktree' for $project..."
-            make -C "$dev_containers_dir" run "$project_arg"
-        fi
-        project_dir="$worktree_dir"
-    fi
-
-    # Open IntelliJ in the background (only with -i)
-    if [ "$open_idea" = "1" ]; then
-        gtk-launch jetbrains-idea "$project_dir" &>/dev/null &
-    fi
-
-    if tmux has-session -t "$session" 2>/dev/null; then
-        tmux attach-session -t "$session"
-        return
-    fi
-
-    # Window 1: lazygit
-    tmux new-session -d -s "$session" -c "$project_dir" -n "git"
-    tmux send-keys -t "$session:git" "lazygit" Enter
-
-    # Window 2: make install (if available)
-    tmux new-window -t "$session" -c "$project_dir" -n "install"
-    if [ -f "$project_dir/Makefile" ] && grep -q '^install:' "$project_dir/Makefile"; then
-        tmux send-keys -t "$session:install" "make install" Enter
-    fi
-
-    # Start the dev container before claude/codex to avoid race condition
-    make -C "$dev_containers_dir" run "$project_arg"
-    sleep 0.5
-
-    # Window 3: make claude
-    tmux new-window -t "$session" -c "$dev_containers_dir" -n "claude"
-    tmux send-keys -t "$session:claude" "make claude $project_arg" Enter
-
-    # Window 4: make codex
-    tmux new-window -t "$session" -c "$dev_containers_dir" -n "codex"
-    tmux send-keys -t "$session:codex" "make codex $project_arg" Enter
-
-    # Attach to session
-    tmux select-window -t "$session:claude"
-    tmux attach-session -t "$session"
-}
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
