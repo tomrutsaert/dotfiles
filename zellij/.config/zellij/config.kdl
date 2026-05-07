@@ -3,6 +3,7 @@
 // Keep this file focused on deliberate overrides. Zellij's built-in defaults
 // provide the full keymap, plugin aliases, and tmux-mode bindings.
 
+theme "dotfiles"
 default_layout "default"
 default_mode "normal"
 
