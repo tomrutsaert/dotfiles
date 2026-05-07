@@ -22,6 +22,11 @@ simplified_ui true
 show_release_notes false
 show_startup_tips false
 
+// Codex CLI expects the literal CSI-u sequence sent by the terminal for
+// Shift+Enter. Zellij's Kitty keyboard protocol mode consumes that sequence
+// before it reaches the pane.
+support_kitty_keyboard_protocol false
+
 // Keep web sharing opt-in only.
 web_server false
 web_sharing "off"
