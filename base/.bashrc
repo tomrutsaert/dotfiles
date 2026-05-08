@@ -91,3 +91,14 @@ export SDKMAN_DIR="$HOME/.sdkman"
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+codex() {
+    if [ -n "${ZELLIJ:-}" ] && [ -t 0 ] && [ -t 1 ]; then
+        case " $* " in
+            *" --no-alt-screen "*) command codex "$@" ;;
+            *) command codex --no-alt-screen "$@" ;;
+        esac
+    else
+        command codex "$@"
+    fi
+}
