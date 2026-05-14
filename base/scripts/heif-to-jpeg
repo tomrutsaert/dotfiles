@@ -1,0 +1,112 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+    cat <<'USAGE'
+Usage: heif-to-jpeg [options] FILE [FILE...]
+
+Convert HEIF/HEIC images to high-quality JPEG files.
+
+Options:
+  -q, --quality N   JPEG quality from 1 to 100 (default: 95)
+  -o, --output FILE Output path; only valid with one input file
+  -f, --force       Overwrite existing output files
+  -h, --help        Show this help
+
+Examples:
+  heif-to-jpeg IMG_3028.HEIC
+  heif-to-jpeg --quality 98 /home/tom/photosync/2026/IMG_3028.HEIC
+USAGE
+}
+
+die() {
+    printf 'heif-to-jpeg: %s\n' "$*" >&2
+    exit 1
+}
+
+quality=95
+force=0
+output=
+inputs=()
+
+while [ "$#" -gt 0 ]; do
+    case "$1" in
+        -q|--quality)
+            [ "$#" -ge 2 ] || die "$1 requires a value"
+            quality=$2
+            shift 2
+            ;;
+        --quality=*)
+            quality=${1#*=}
+            shift
+            ;;
+        -o|--output)
+            [ "$#" -ge 2 ] || die "$1 requires a value"
+            output=$2
+            shift 2
+            ;;
+        --output=*)
+            output=${1#*=}
+            shift
+            ;;
+        -f|--force)
+            force=1
+            shift
+            ;;
+        -h|--help)
+            usage
+            exit 0
+            ;;
+        --)
+            shift
+            while [ "$#" -gt 0 ]; do
+                inputs+=("$1")
+                shift
+            done
+            ;;
+        -*)
+            die "unknown option: $1"
+            ;;
+        *)
+            inputs+=("$1")
+            shift
+            ;;
+    esac
+done
+
+[ "${#inputs[@]}" -gt 0 ] || {
+    usage >&2
+    exit 64
+}
+
+[[ "$quality" =~ ^[0-9]+$ ]] || die "quality must be a number from 1 to 100"
+[ "$quality" -ge 1 ] && [ "$quality" -le 100 ] || die "quality must be from 1 to 100"
+
+if [ -n "$output" ] && [ "${#inputs[@]}" -ne 1 ]; then
+    die "--output can only be used with one input file"
+fi
+
+command -v magick >/dev/null 2>&1 || die "ImageMagick is required; install it so the 'magick' command is available"
+
+convert_one() {
+    local input=$1
+    local target=$2
+
+    [ -f "$input" ] || die "input file not found: $input"
+
+    if [ -z "$target" ]; then
+        target=${input%.*}.jpg
+        [ "$target" != "$input" ] || target=$input.jpg
+    fi
+
+    if [ -e "$target" ] && [ "$force" -ne 1 ]; then
+        die "output already exists: $target (use --force to overwrite)"
+    fi
+
+    magick "$input" -auto-orient -quality "$quality" "$target"
+    printf 'Wrote %s\n' "$target"
+}
+
+for input in "${inputs[@]}"; do
+    convert_one "$input" "$output"
+done

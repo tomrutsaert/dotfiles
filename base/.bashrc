@@ -60,6 +60,7 @@ alias l='ls -CF --color=auto'
 alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
+alias heif-to-jpeg="$HOME/scripts/heif-to-jpeg"
 
 # Use Vim instead of Vi
 alias vi='nvim'
@@ -102,3 +103,6 @@ codex() {
         command codex "$@"
     fi
 }
+
+# opencode
+export PATH=/home/tom/.opencode/bin:$PATH

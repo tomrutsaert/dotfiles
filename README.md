@@ -14,6 +14,11 @@ Example to set hyprland config:
 stow -t $HOME hyprland
 ```
 
+Example to set pi extensions:
+```
+stow -t $HOME pi
+```
+
 ## Host-specific packages
 
 Several tools (`niri`, `sway`) share a common config and pull host-specific
